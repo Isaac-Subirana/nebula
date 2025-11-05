@@ -6,8 +6,8 @@ Siusplau, tingui present que aquests eren els requisits del sistema durant l'úl
 
 # Aplicacions recomanades
 * [Everything](https://www.voidtools.com/downloads/) (si compilarà el Projecte des d'un ordinador amb Windows), molt útil per a trobar fitxers específics en carpetes grans (com ara Chromium).
-* [Visual Studio Code](https://code.visualstudio.com/Download), to search for specific project strings and bulk-modifying these. 
-* [MSYS2](https://www.msys2.org/) (if you're on Windows), for running `.sh` scripts (related to icon modification or testing).
+* [Visual Studio Code](https://code.visualstudio.com/Download), per a buscar cadenes de text específiques i modificar-les en bloc. 
+* [MSYS2](https://www.msys2.org/) (si compilarà Nebula des d'un ordinador amb Windows), per a executar scripts `.sh` (relacionats amb canvis d'icones o alguns tests).
 
 # Get the code
 Please read the instructions on how to get the code for your operating system from [the Chromium project documentation](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md).
