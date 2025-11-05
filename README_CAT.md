@@ -1,10 +1,10 @@
-# System requirements
-Keep in mind these were the system requirements at the time of these README's last update. They may vary over time.
-* An x86-64 machine with at least 8 GB of RAM. More than 16 GB is recommended -and the compilation time will still be really long. 64+ GB are not excessive. 20+ CPU cores are not excessive either.
-* At least 100GB of free disk space (more accurately described in each operating system's instructions). An SSD is recommended, to improve download and compilation times.
-* Git (or [Git for Windows](https://gitforwindows.org/) if you're on Windows) installed.
+# Requeriments mínims del sistema
+Siusplau, tingui present que aquests eren els requisits del sistema durant l'última actualització d'aquest README. Podria ser que haguessin canviat amb el temps.
+* Un ordinador d'arquitectura x86-64 amb, com a mínim, 8 GB DE RAM. Es recomana tenir més de 16 GB de RAM, i tot i així el temps de compilació serà molt llarg. Més de 64 GB no són excessives, així com una CPU amb més de 20 nuclis tampoc no és excessiva.
+* Com a mínim 100GB d'expai lliure al disc dur (en podeu trobar una descripció més detallada a les instruccions del projecte Chromium per al vostre sistema operatiu). Es recomana un SSD, per a un temps de descàrrega i compilació més petit.
+* Tenir Git instal·lat (o [Git per a Windows](https://gitforwindows.org/) si compilarà Nebula des d'un ordinador Windows).
 
-# Recommended apps
+# Aplicacions recomanades
 * [Everything](https://www.voidtools.com/downloads/) (if you're on Windows), very useful for finding specific files in large folders (such as Chromium).
 * [Visual Studio Code](https://code.visualstudio.com/Download), to search for specific project strings and bulk-modifying these. 
 * [MSYS2](https://www.msys2.org/) (if you're on Windows), for running `.sh` scripts (related to icon modification or testing).
