@@ -21,7 +21,7 @@ Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·
 Segueixi tots els passos per a configurar el seu sistema i descarregar-se el codi, fins a arribar a l'apartat `Setting up the build`.
 
 # Modificacions
-**Tot seguit, llistarem les modificacions a aplicar a al codi font de Chromium per a obtenir Nebula. Si només vol compilar Chromium, o si vol compilar Chromium abans de aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README]().
+**Tot seguit, llistarem les modificacions a aplicar a al codi font de Chromium per a obtenir Nebula. Si només vol compilar Chromium, o si vol compilar Chromium abans de aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md).
 
 # Compilació de Chromium
 Un cop dutes a terme les modificacions al codi font proposades, ja pot compilar el projecte, i obtindrà el navegador Nebula.
