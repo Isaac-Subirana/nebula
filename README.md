@@ -1,13 +1,5 @@
-# Minimum system requirements
-Keep in mind these were the system requirements at the time of these README's last update. They may vary over time.
-* An x86-64 machine with at least 8 GB of RAM. More than 16 GB are recommended, and the compilation time will still be really long. 64+ GB are not excessive. 20+ CPU cores are not excessive either.
-* At least 100GB of free disk space (more accurately described in each operating system's Chromium instructions). An SSD is recommended, to improve download and compilation times.
-* Git (or [Git for Windows](https://gitforwindows.org/) if you're on Windows) installed.
+You can find the documentation **in English** detailing how to get Chromium code and modify and compile it to get Nebula [here](https://github.com/Isaac-Subirana/nebula/blob/main/README_ENGLISH.md).
 
-# Recommended apps
-* [Everything](https://www.voidtools.com/downloads/) (if you're on Windows), very useful for finding specific files in large folders (such as Chromium).
-* [Visual Studio Code](https://code.visualstudio.com/Download), to search for specific project strings and bulk-modifying these. 
-* [MSYS2](https://www.msys2.org/) (if you're on Windows), for running `.sh` scripts (related to icon modification or testing).
+Pot trobar la documentació **en català** sobre com descarregar-se, modificar i compilar el codi de Chromium per obtenir el navegador Nebula [des d'aquí](https://github.com/Isaac-Subirana/nebula/blob/main/README_CATAL%C3%80.md).
 
-# Get the code
-Please read the instructions on how to get the code for your operating system from [the Chromium project documentation](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md).
+Puede encontrar la documentación **en español** sobre cómo descargar, modificar y compilar el código de Chromium para obtener el navegador Nebula [aquí]().
