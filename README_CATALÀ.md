@@ -9,12 +9,12 @@
     - [Per protegir d'altres mètodes d'identificació (_fingerprinting_, _DO NOT TRACK_, etc.) i desactivar la _prerenderització_ i la _preconnexió_](#per-protegir-daltres-mètodes-didentificació-fingerprinting-do-not-track-etc-i-desactivar-la-prerenderització-i-la-preconnexió)
     - [Per desactivar la _Privacy Sandbox_](#per-desactivar-la-privacy-sandbox)
     - [Per desactivar les mètriques d'ús i informes d'errors](#per-desactivar-les-mètriques-dús-i-informes-derrors)
-    - [D'altres modificacions per fer la vida de l'usuari més agradable](#daltres-modificacions-per-fer-la-vida-de-lusuari-més-agradable)
+    - [D'altres modificacions per fer la vida de l'usuari més agradable (_quality of live improvements_)](#daltres-modificacions-per-fer-la-vida-de-lusuari-més-agradable-quality-of-live-improvements)
     - [Interfície gràfica i personalització](#interfície-gràfica-i-personalització)
 - [Compilació de Chromium](#compilació-de-chromium)
     - [Com crear un instal·lador interactiu](#com-crear-un-installador-interactiu)
 - [Tests recomanats](#tests-recomanats)
-    - [Del mateix Projecte](#del-mateix-projecte)
+    - [Del mateix projecte Chromium](#del-mateix-projecte-chromium)
     - [Referents a la privacitat](#referents-a-la-privacitat)
     - [Referents al rendiment](#referents-al-rendiment)
 
@@ -46,7 +46,9 @@ Segueixi tots els passos per a configurar el seu sistema i descarregar-se el cod
 Les rutes on fer les modificacions que mencionarem són relatives a la ruta de descàrrega de Chromium. Si l'heu descarregat a la carpeta recomanada per la documentació del projecte Chromium, partirem sempre de `[EL TEU DISC]/src/chromium/src/`.
 
 ### Per protegir de les galetes (_cookies_)
-1. Afegir a totes les galetes guardades l'atribut `samesite=strict`, per molt que s'intentin guardar amb valors diferents.
+1. Afegir a totes les galetes guardades l'atribut `samesite=strict`, per molt que s'intentin guardar amb valors diferents. 
+   
+   Podeu considerar si voleu que l'atribut aplicat sigui `samesite` o si considereu que amb `lax` n'hi ha prou per evitar les casuístiques que us interessi.
     * **Fitxer a modificar: `net/cookies/canonical_cookie.cc`**
     * **Codi a modificar:**
 
@@ -117,6 +119,290 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
         ```
 
 ### Per protegir d'altres mètodes d'identificació (_fingerprinting_, _DO NOT TRACK_, etc.) i desactivar la _prerenderització_ i la _preconnexió_
+1. Activar la _flag_ (paràmetre experimental) que afegeix _soroll_ al generar llenços, per a fer el navegador menys reconeixible.
+
+    Alternativament, també podeu bloquejar completament l'enviament de _canvas_, buscant una secció de codi similar dins del mateix fitxer, però on es mencioni `kBlockCanvasReadback`, i aplicant-hi les mateixes modificacions.
+   
+    * **Fitxer a modificar: `components/fingerprinting_protection_filter/interventions/common/interventions_features.cc`**
+    * **Codi a modificar:**
+
+        Substitució de:
+
+        ```C++
+        BASE_FEATURE(kCanvasNoise, base::FeatureState::FEATURE_DISABLED_BY_DEFAULT);
+
+        BASE_FEATURE_PARAM(bool,
+                        kCanvasNoiseInRegularMode,
+                        &kCanvasNoise,
+                        "enable_in_regular_mode",
+                        false);
+        ```
+
+        Per:
+
+        ```C++
+        BASE_FEATURE(kCanvasNoise, base::FeatureState::FEATURE_ENABLED_BY_DEFAULT);
+
+        BASE_FEATURE_PARAM(bool,
+                        kCanvasNoiseInRegularMode,
+                        &kCanvasNoise,
+                        "enable_in_regular_mode",
+                        true);
+        ```
+2. Mentir a WebGL sobre el hardware de l'ordinador des del qual s'executi el navegador, per a evitar el _fingerprinting_ a través de WebGL. 
+
+    Podeu igualment modificar els valors falsos que li proporcionem per qualsevols altre que considereu oportuns i creïbles.
+
+    * **Fitxers a modificar: `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc` i
+        `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`**
+    * **Codi a modificar:**
+
+        Dins de `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc`:
+
+        Substitució de:
+
+        ```C++
+        : vendor_(vendor),
+          architecture_(architecture),
+          subgroup_min_size_(subgroup_min_size),
+          subgroup_max_size_(subgroup_max_size),
+          is_fallback_adapter_(is_fallback_adapter),
+          device_(device),
+          description_(description),
+          driver_(driver),
+          backend_(backend),
+          type_(type),
+          d3d_shader_model_(d3d_shader_model),
+          vk_driver_version_(vk_driver_version),
+          power_preference_(power_preference) {}
+        ```
+
+        Per:
+
+        ```C++
+        : vendor_("Intel Inc."),
+          architecture_("Gen12"),
+          subgroup_min_size_(subgroup_min_size),
+          subgroup_max_size_(subgroup_max_size),
+          is_fallback_adapter_(false),
+          device_("Intel(R) Iris(R) Xe Graphics"),
+          description_("Intel(R) Iris(R) Xe Graphics"),
+          driver_("31.0.101.4502"),
+          backend_("d3d12"),
+          type_("integrated"),
+          d3d_shader_model_(d3d_shader_model),
+          vk_driver_version_(vk_driver_version),
+          power_preference_(power_preference) {}
+        ```
+
+        Dins de `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`: 
+
+        **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada component que mencionem i subsituir-lo per la versió que proposem (o els valors que considereu oportuns) manualment!**
+
+        Substitució de:
+
+        ```C++
+        //Fragment de codi 1
+
+        case GL_SHADING_LANGUAGE_VERSION:
+            if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                    blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(String(
+                            ContextGL()->GetString(GL_SHADING_LANGUAGE_VERSION))));
+            }
+            return WebGLAny(
+                script_state,
+                "WebGL GLSL ES 1.0 (" +
+                    String(ContextGL()->GetString(GL_SHADING_LANGUAGE_VERSION)) +
+                    ")");
+
+        //Fragment de codi 2
+
+        case GL_VERSION:
+            if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                    blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                            String(ContextGL()->GetString(GL_VERSION))));
+            }
+            return WebGLAny(
+                script_state,
+                "WebGL 1.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
+
+        //Fragment de codi 3
+
+        case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
+            if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+                if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                        blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                                String(ContextGL()->GetString(GL_RENDERER))));
+                }
+                return WebGLAny(script_state,
+                                String(ContextGL()->GetString(GL_RENDERER)));
+            }
+            SynthesizeGLError(
+                GL_INVALID_ENUM, "getParameter",
+                "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+            return ScriptValue::CreateNull(script_state->GetIsolate());
+        case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
+            if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+                if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                        blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                                String(ContextGL()->GetString(GL_VENDOR))));
+                }
+                return WebGLAny(script_state,
+                                String(ContextGL()->GetString(GL_VENDOR)));
+            }
+            SynthesizeGLError(
+                GL_INVALID_ENUM, "getParameter",
+                "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+        ```
+
+        Per:
+        
+        ```C++
+        //Fragment de codi 1
+
+        case GL_SHADING_LANGUAGE_VERSION:
+            if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                    blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(String("WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)")));
+            }
+            return WebGLAny(
+                script_state,
+                String("WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"));
+
+        //Fragment de codi 2
+
+        case GL_VERSION:
+            if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                    blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                            String("WebGL 1.0 (OpenGL ES 2.0 Chromium)")));
+            }
+            return WebGLAny(
+                script_state,
+                String("WebGL 1.0 (OpenGL ES 2.0 Chromium)"));
+
+        //Fragment de codi 3
+        case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
+            if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+                if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                        blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                                String("ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x0000A7A1) Direct3D11 vs_5_0 ps_5_0, D3D11)")));
+                }
+                return WebGLAny(script_state,
+                                String("ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x0000A7A1) Direct3D11 vs_5_0 ps_5_0, D3D11)"));
+            }
+            SynthesizeGLError(
+                GL_INVALID_ENUM, "getParameter",
+                "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+            return ScriptValue::CreateNull(script_state->GetIsolate());
+        case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
+            if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
+                if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
+                        blink::IdentifiableSurface::Type::kWebGLParameter)) {
+                RecordIdentifiableGLParameterDigest(
+                    pname, IdentifiabilityBenignStringToken(
+                                String("Google Inc. (Intel)")));
+                }
+                return WebGLAny(script_state,
+                                String("Google Inc. (Intel)"));
+            }
+            SynthesizeGLError(
+                GL_INVALID_ENUM, "getParameter",
+                "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+        ```
+
+3. Activar per defecte la sol·licitud "_DO NOT TRACK_", la protecció contra fingerprinting i la protecció  d'IP gestionades per la _Privacy Sandbox_, i bloquejar les galetes de tercers també en el mode B (un entorn alternatiu temporal dins de Chromium).
+    
+    * **Fitxer a modificar: `components/privacy_sandbox/tracking_protection_prefs.cc`**
+    * **Codi a modificar:**
+
+        Substitució de:
+
+        ```C++
+        registry->RegisterBooleanPref(
+            prefs::kEnableDoNotTrack, false,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(
+            prefs::kFingerprintingProtectionEnabled, false,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(
+            prefs::kIpProtectionEnabled, false,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+
+
+        // TODO(https://b/333527273): The following prefs should be deprecated.
+        // Still in use for Mode B.
+        registry->RegisterBooleanPref(
+            prefs::kBlockAll3pcToggleEnabled, false,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(prefs::kTrackingProtection3pcdEnabled, false);
+        ```
+
+        Per:
+
+        ```C++
+        registry->RegisterBooleanPref(
+            prefs::kEnableDoNotTrack, true,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(
+            prefs::kFingerprintingProtectionEnabled, true,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(
+            prefs::kIpProtectionEnabled, true,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+
+
+        // TODO(https://b/333527273): The following prefs should be deprecated.
+        // Still in use for Mode B.
+        registry->RegisterBooleanPref(
+            prefs::kBlockAll3pcToggleEnabled, true,
+            user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+        registry->RegisterBooleanPref(prefs::kTrackingProtection3pcdEnabled, true);
+        ```
+
+4. Activar algunes intervencions per aturar el _fingerprinting_ en el mode d'Incògnit, desactivar el _fallback_ de la _prerenderització_ a la _preconnexió_.
+
+    * **Fitxer a modificar: `chrome/common/chrome_features.cc `** 
+    * **Codi a modificar:**
+
+        Substitució de:
+
+        ```C++
+        BASE_FEATURE(kIncognitoFingerprintingInterventions,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+        ```
+
+        Per:
+
+        ```C++
+        BASE_FEATURE(kIncognitoFingerprintingInterventions,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+        ```
+
+        Substitució també de:
+
+        ```C++
+        BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_ENABLED_BY_DEFAULT);
+        ```
+
+        Per:
+
+        ```C++
+        BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_DISABLED_BY_DEFAULT);
+        ```
+
 
 ### Per desactivar la _Privacy Sandbox_
 
@@ -148,7 +434,7 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
 
 2. Desactivació de la possibilitat de l'enviament d'informes d'errors.
 
-    * **Fitxer a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no sé a quins fitxers en pot trobar la implementació).
+    * **Fitxer a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
     * **Codi a modificar:**
 
         Substitució de:
@@ -173,8 +459,8 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
         }
         ```
 
-### D'altres modificacions per fer la vida de l'usuari més agradable
-1. Activar per defecte la _flag_ (paràmetre experimental) que permet les descàrregues paral·leles.
+### D'altres modificacions per fer la vida de l'usuari més agradable (_quality of live improvements_)
+1. Activar per defecte la _flag_ que permet les descàrregues paral·leles.
    
    * **Fitxer a modificar: `components/download/public/common/download_features.cc`**
    * **Codi a modificar:**
@@ -223,7 +509,7 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
 
 ### Interfície gràfica i personalització
 
-1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista de els IDs a `third_party/search_engines_data/resources/definitions`.
+1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista de els IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
    
    * **Fitxer a modificar: `components/search_engines/template_url_prepopulate_data.cc`**
    * **Codi a modificar:**
@@ -268,19 +554,19 @@ Si voleu crear un instal·lador interactiu per a utilitzar-lo en lloc del `mini_
   autoninja mini_installer
   ```
 
-* Descarregeu-vos o copieu l'script `UI_installer.iss` que podeu trobar a la carpeta `resources` d'aquest repositori.
-* Compileu-lo utilitzant Inno Setup Compiler (tingueu en compte que heu de copiar el `mini_installer.exe` compilat pel Projecte a la carpeta on us hagueu descarregat l'script).
+* Descarregeu-vos o copieu l'script [`UI_installer.iss`](https://github.com/Isaac-Subirana/nebula/blob/main/resources/UI_installer.iss) que podeu trobar a la carpeta `resources` d'aquest repositori.
+* Compileu-lo utilitzant Inno Setup Compiler (tingueu en compte que heu de copiar el `mini_installer.exe` generat pel Projecte a la carpeta on us hagueu descarregat l'script).
 
-Alternativament, també podeu crear vosaltres el vostre propi script i compilar-lo des del programa que més us agradi.
+Alternativament, també podeu crear vosaltres el vostre propi script i compilar-lo des del programa que més us agradi, i fer que extregui (o no) directament els fitxers del vostre navegador en lloc de ser una façana sobre el `mini_installer`.
 
 # Tests recomanats
-### Del mateix Projecte
+### Del mateix projecte Chromium
 Recomanem utilitzar les utilitats `base_unittests` i `browser_tests`, que venen amb el codi font del navegador. Podem compilar-les amb la comanda següent:
 ```shell
 cd out/Default
 autoninja base_unittests && autoninja browser_tests
 ```
-Podeu trobar la documentació del Projecte referent a totes les seves utilitats de testeig [aquí](https://chromium.googlesource.com/chromium/src/+/main/docs/testing/testing_in_chromium.md).
+Després, només caldrà executar-los. Podeu trobar la documentació del Projecte referent a totes les seves utilitats de testeig [aquí](https://chromium.googlesource.com/chromium/src/+/main/docs/testing/testing_in_chromium.md).
 
 ### Referents a la privacitat
 * L'analitzador de privacitat de [Privacy.net](https://privacy.net/analyzer/).
