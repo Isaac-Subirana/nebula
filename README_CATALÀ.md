@@ -1,5 +1,6 @@
 # Índex
 - [Índex](#índex)
+- [Descarregar-se el navegador Nebula](#descarregar-se-el-navegador-nebula)
 - [Requeriments mínims del sistema](#requeriments-mínims-del-sistema)
 - [Aplicacions recomanades](#aplicacions-recomanades)
 - [Preparar-se i descarregar el codi font](#preparar-se-i-descarregar-el-codi-font)
@@ -17,6 +18,14 @@
     - [Del mateix projecte Chromium](#del-mateix-projecte-chromium)
     - [Referents a la privacitat](#referents-a-la-privacitat)
     - [Referents al rendiment](#referents-al-rendiment)
+  
+# Descarregar-se el navegador Nebula
+
+En aquest document es detallen les instruccions per a compilar Nebula (o qualsevol altre navegador basat en Chromium) des de zero amb els seus propis recursos. 
+
+Per a fer-ho, necessitarà alguns coneixements tècnics, predisposició per a llegir documentació en anglès, un ordinador mitjanament potent i paciència (o un ordinador qualsevol i MOLTA paciència), a més d'altres detalls que pot trobar a la secció [Requeriments mínims del sistema](#requeriments-mínims-del-sistema) d'aquest README. 
+
+Si el que vol és simplement descarregar-se i instal·lar el navegador Nebula, pot fer-ho des d'[aquest enllaç](https://github.com/Isaac-Subirana/nebula/releases). Cliqui a la primera ocurrència de `Nebula-Setup.exe` que vegi.
 
 # Requeriments mínims del sistema
 Siusplau, tingui present que aquests eren els requisits del sistema durant l'última actualització d'aquest README. Podria ser que haguessin canviat amb el temps.
@@ -41,9 +50,13 @@ Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·
 Segueixi tots els passos per a configurar el seu sistema i descarregar-se el codi, fins a arribar a l'apartat `Setting up the build`.
 
 # Modificacions
-**Tot seguit, llistarem les modificacions a aplicar a al codi font de Chromium per a obtenir Nebula. Si només vol compilar Chromium, o si vol compilar Chromium abans d'aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README](https://github.com/Isaac-Subirana/nebula/blob/main/README_CATAL%C3%80.md#compilaci%C3%B3-de-chromium).**
+**Tot seguit, oferim un llistat de les modificacions a aplicar a al codi font de Chromium per a obtenir Nebula.**
+
+**Si només vol compilar Chromium, o si vol compilar Chromium abans d'aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README](https://github.com/Isaac-Subirana/nebula/blob/main/README_CATAL%C3%80.md#compilaci%C3%B3-de-chromium).**
 
 Les rutes on fer les modificacions que mencionarem són relatives a la ruta de descàrrega de Chromium. Si l'heu descarregat a la carpeta recomanada per la documentació del projecte Chromium, partirem sempre de `[EL TEU DISC]/src/chromium/src/`.
+
+Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar directament sobre la versió original, però comproveu que l'estructura del codi sigui igual a l'original que proveïm nosaltres. En algun cas en què això segur que no sigui possible (perquè proveïm de diversos fragments a modificar dins d'una mateixa caixa de text) n'avisem al principi.
 
 ### Per protegir de les galetes (_cookies_)
 1. Afegir a totes les galetes guardades l'atribut `samesite=strict`, per molt que s'intentin guardar amb valors diferents. 
@@ -403,8 +416,139 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
         BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_DISABLED_BY_DEFAULT);
         ```
 
+5. Desactivar el _prefetch proxy_ de Chromium (el component que duu a terme la preconnexió).
+    
+    * **Fitxer a modificar: `content/public/common/content_features.cc`**
+    * **Codi a modificar:**
+    
+        Substitució de:
+        ```C++
+        BASE_FEATURE(kPrefetchProxy, base::FEATURE_ENABLED_BY_DEFAULT);
+        ```
+
+        per:
+
+        ```C++
+        BASE_FEATURE(kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT);
+        ```
+   
+6. Fer que la _prerenderització_ no s'activi en xarxes lentes i canviar els paràmetres sobre la velocitat de xarxa considerada lenta perquè el navegador consideri que qualsevol xarxa ho és. 
+
+    * **Fitxer a modificar: `content/browser/preloading/prerender/prerender_features.cc`**
+    * **Codi a modificar:**
+    
+        Substitució de:
+
+        ```C++
+        BASE_FEATURE(kSuppressesPrerenderingOnSlowNetwork,
+                base::FEATURE_DISABLED_BY_DEFAULT);
+
+        // Regarding how this number was chosen, see the design doc linked from
+        // crbug.com/350519234.
+        const base::FeatureParam<base::TimeDelta>
+            kSuppressesPrerenderingOnSlowNetworkThreshold{
+                &kSuppressesPrerenderingOnSlowNetwork,
+                "slow_network_threshold_for_prerendering", base::Milliseconds(208)};
+        ```
+
+        Per:
+
+        ```C++
+        BASE_FEATURE(kSuppressesPrerenderingOnSlowNetwork,
+                base::FEATURE_ENABLED_BY_DEFAULT);
+
+        // Regarding how this number was chosen, see the design doc linked from
+        // crbug.com/350519234.
+        const base::FeatureParam<base::TimeDelta>
+            kSuppressesPrerenderingOnSlowNetworkThreshold{
+                &kSuppressesPrerenderingOnSlowNetwork,
+                "slow_network_threshold_for_prerendering", base::Milliseconds(1)};
+        ```
 
 ### Per desactivar la _Privacy Sandbox_
+1. Desactivació de components de _Privacy Sanbox_ referents a l'agrupació de l'historial web en Temes (_Topics_) i als anuncis personalitzats, entre d'altres.
+   
+   * **Fitxer a modificar: `components/privacy_sandbox/privacy_sandbox_features.cc`**
+   * **Codi a modificar:**
+    
+       **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada fragment de codi i subsituir-lo manualment!**
+
+        Substitució de: 
+        
+        ```C++
+        //Fragment de codi 1
+        BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_ENABLED_BY_DEFAULT);
+
+
+        //Fragment de codi 2
+        BASE_FEATURE(kEnforcePrivacySandboxAttestations,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+        //Fragment de codi 3
+        BASE_FEATURE(kPrivacySandboxActivityTypeStorage,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+        //Fragment de codi 4
+        BASE_FEATURE(kPrivacySandboxAdTopicsContentParity,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+        //Fragment de codi 5
+        BASE_FEATURE(kPrivacySandboxMigratePrefsToSchemaV2,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+        //Fragment de codi 6
+        const char kPrivacySandboxActivityTypeStorageLastNLaunchesName[] =
+            "last-n-launches";
+
+        const base::FeatureParam<int> kPrivacySandboxActivityTypeStorageLastNLaunches{
+            &kPrivacySandboxActivityTypeStorage,
+            kPrivacySandboxActivityTypeStorageLastNLaunchesName, 100};
+
+        const char kPrivacySandboxActivityTypeStorageWithinXDaysName[] =
+            "within-x-days";
+
+        const base::FeatureParam<int> kPrivacySandboxActivityTypeStorageWithinXDays{
+            &kPrivacySandboxActivityTypeStorage,
+            kPrivacySandboxActivityTypeStorageWithinXDaysName, 60};
+        ```
+
+        Per:
+
+        ```C++
+        //Fragment de codi 1
+        BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT);
+
+        //Fragment de codi 2
+        BASE_FEATURE(kEnforcePrivacySandboxAttestations,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+        //Fragment de codi 3
+        BASE_FEATURE(kPrivacySandboxActivityTypeStorage,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+        //Fragment de codi 4
+        BASE_FEATURE(kPrivacySandboxAdTopicsContentParity,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+        //Fragment de codi 5
+        BASE_FEATURE(kPrivacySandboxMigratePrefsToSchemaV2,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+        //Fragment de codi 6
+        const char kPrivacySandboxActivityTypeStorageLastNLaunchesName[] =
+        "last-n-launches";
+
+        const base::FeatureParam<int> kPrivacySandboxActivityTypeStorageLastNLaunches{
+            &kPrivacySandboxActivityTypeStorage,
+            kPrivacySandboxActivityTypeStorageLastNLaunchesName, 1};
+
+        const char kPrivacySandboxActivityTypeStorageWithinXDaysName[] =
+            "within-x-days";
+
+        const base::FeatureParam<int> kPrivacySandboxActivityTypeStorageWithinXDays{
+            &kPrivacySandboxActivityTypeStorage,
+            kPrivacySandboxActivityTypeStorageWithinXDaysName, 1};
+        ```
 
 ### Per desactivar les mètriques d'ús i informes d'errors
 1. Desactivació de les mètriques d'ús.
@@ -509,7 +653,7 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
 
 ### Interfície gràfica i personalització
 
-1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista de els IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
+1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista dels IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
    
    * **Fitxer a modificar: `components/search_engines/template_url_prepopulate_data.cc`**
    * **Codi a modificar:**
@@ -537,9 +681,74 @@ Les rutes on fer les modificacions que mencionarem són relatives a la ruta de d
         }
         ```
 
+2. Desactivar el missatge flotant "Falten algunes claus d'API de Google"  que apareix per defecte cada vegada que s'inicia el navegador. 
+
+    Si vostè ho considera oportú, pot fer servir claus d'API de Google per a obtenir accés a serveis com ara el Traductor de Google integrat al navegador, o la sincronització de preferències. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) pot trobar les instruccions per utilitzar-ne. Nosaltres, en aquest cas, no ho vam considerar necessari.
+
+    * **Fitxer a modificar: `chrome/browser/ui/startup/infobar_utils.cc`**
+    * **Codi a modificar:**
+        Substitució de:
+
+        ```C++
+        if (!google_apis::HasAPIKeyConfigured()) {
+            GoogleApiKeysInfoBarDelegate::Create(infobar_manager);
+        }
+        ```
+
+        Per:
+
+        ```C++
+        /*if (!google_apis::HasAPIKeyConfigured()) {
+            GoogleApiKeysInfoBarDelegate::Create(infobar_manager);
+        }*/
+        ```
+
+3. Personalitzar les cadenes de text del navegador (el nom que apareix a la interfície gràfica).
+   
+    * **Fitxers a modificar - per a les frases de referència:**
+    
+        * `chrome/app/chromium_strings.grd`
+        * `chrome/app/google_chrome_strings.grd`
+        * `chrome/app/settings_strings.grdp`
+        * `chrome/app/settings_chromium_strings.grdp`
+        * `chrome/app/settings_google_chrome_strings.grdp`
+        * `components/components_chromium_strings.grd`
+    
+    * **Codi a modificar - per a les frases de referència:**
+        Dins d'aquests fitxers, substitueixi només les ocurrències de "Chrome" i "Chromium" que apareguin en cadenes de text amb l'atribut `translateable="false"`, com en el següent exemple:
+
+        ```xml
+        <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
+            Chromium
+          </message>
+        ```
+        Aquest exemple mencionat hauríem de substituir-lo per:
+
+        ```xml
+        <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
+            [El nom del vostre navegador]
+          </message>
+        ```
+
+    * **Fitxers a modificar - per a les traduccions:**
+
+        Perquè el nom es mostri correctament en tots els idiomes, s'han d'editar tots els fitxers `.xtb` dins de les carpetes `chrome/app/resources/` i `components/strings/`.
+
+    * **Codi a modificar - per a les traduccions:**
+        Substitueixi les referències a `Chromium` i `Chrome` (recomanem utilitzar Visual Studio Code per a buscar totes les ocurrències d'aquestes paraules dins dels fitxers i substituir-les directament) pel nom personalitzat del seu navegador. **Recordi activar la opció perquè la cerca i substitució distingeixi entre majúscules i minúscules, o podria ser que es trobi amb errors de compilació al modificar sense voler noms de variable.** 
+        
+        Un cop fet, si el vol fer públic, busqui també globalment `[El nom del seu navegador]OS` (per exemple, `NebulaOS`) i torni'l a substituir per `ChromeOS`, ja que amb la cerca anterior s'haurà fet aquest canvi indesitjat.
+
+4. Canviar el logotip del navegador per un logotip personalitzat. 
+
+
+5. Canviar el fitxer de BRANDING del navegador.
+    
+    * **Fitxer a modificar: ``**
+    * **Codi a modificar:** Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer i el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
 
 # Compilació de Chromium
-Un cop dutes a terme les modificacions al codi font proposades, ja pot compilar el projecte, i obtindrà el navegador Nebula.
+Un cop dutes a terme les modificacions al codi font proposades, ja pot compilar el projecte, i n'obtindrà el navegador Nebula.
 
 Per fer-ho, segueixi les instruccions proporcionades [al document referent al seu sistema operatiu](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md) des de l'apartat `Setting up the build`.
 
