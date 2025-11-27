@@ -657,6 +657,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
    
    * **Fitxer a modificar: `components/search_engines/template_url_prepopulate_data.cc`**
    * **Codi a modificar:**
+        
         Substitució de:
 
         ```C++
@@ -687,6 +688,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
     * **Fitxer a modificar: `chrome/browser/ui/startup/infobar_utils.cc`**
     * **Codi a modificar:**
+       
         Substitució de:
 
         ```C++
@@ -715,6 +717,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         * `components/components_chromium_strings.grd`
     
     * **Codi a modificar - per a les frases de referència:**
+        
         Dins d'aquests fitxers, substitueixi només les ocurrències de "Chrome" i "Chromium" que apareguin en cadenes de text amb l'atribut `translateable="false"`, com en el següent exemple:
 
         ```xml
@@ -735,17 +738,62 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         Perquè el nom es mostri correctament en tots els idiomes, s'han d'editar tots els fitxers `.xtb` dins de les carpetes `chrome/app/resources/` i `components/strings/`.
 
     * **Codi a modificar - per a les traduccions:**
+        
         Substitueixi les referències a `Chromium` i `Chrome` (recomanem utilitzar Visual Studio Code per a buscar totes les ocurrències d'aquestes paraules dins dels fitxers i substituir-les directament) pel nom personalitzat del seu navegador. **Recordi activar la opció perquè la cerca i substitució distingeixi entre majúscules i minúscules, o podria ser que es trobi amb errors de compilació al modificar sense voler noms de variable.** 
         
         Un cop fet, si el vol fer públic, busqui també globalment `[El nom del seu navegador]OS` (per exemple, `NebulaOS`) i torni'l a substituir per `ChromeOS`, ja que amb la cerca anterior s'haurà fet aquest canvi indesitjat.
 
 4. Canviar el logotip del navegador per un logotip personalitzat. 
+   
+    #### Si només vol utilitzar el logotip de Nebula
 
+   Si només vol canviar el logotip de per defecte per el de Nebula, pot substituir directament els fitxers d'icones dins de `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosaltres li proporcionem directament el fitxer `.ico` per a Windows, i els fitxers de la icona original en diverses mides i formats si el que vol és compilar el navegador per a una plataforma diferent.
+   
+    #### Si vol utilitzar un logotip personalitzat
+
+   Si el que vol és utilitzar un logotip personalitzat, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
+   
+    Si vol que els logos es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
+    
+    Per a poder executar `src/tools/resources/optimize-ico-files.py`, recomanat dins de les instruccions,  _**si està compilant Chromium des de Windows**_, ho haurà de fer utilitzant alguna eina que li permeti executar scripts `.sh` (scripts _bash_ de Linux). 
+    
+    Li recomanem utilitzar [MSYS2](https://www.msys2.org/) de la següent manera: 
+       
+    * Descarregui's els executables que trobarà dins `resources/logo/programs` en aquest mateix repositori a la carpeta `C:/src/tools`.
+    * Substitueixi els `.ico` del projecte amb els seus.
+    * Executi les següents comandes, seguides i sense reiniciar MSYS:
+        ```bash
+        pacman -S mingw-w64-x86_64-advancecomp mingw-w64-x86_64-libpng mingw-w64-x86_64-optipng
+        
+        export PATH="/mingw64/bin:$PATH"
+        export PATH="/c/src/tools:$PATH"
+
+        cd /c/src/chromium/src
+        python tools/resources/optimize-ico-files.py chrome/app/theme/chromium/win/chromium.ico 
+        # Executar aquesta última comanda amb les diverses rutes dels .ico a comprovar.
+        ```
+        
+        L'_output_ de l'última comanda hauria de ser semblant al següent:
+
+        ```
+        INFO: chromium.ico entry #1: 16x16, 1128 bytes (BMP)
+        INFO: chromium.ico entry #2: 16x16, 1384 bytes (BMP)
+        INFO: chromium.ico entry #3: 256x256, 71768 bytes (PNG)
+        Optimized 1/1 files in 00:00:23s
+        Result: 71768 => 60935 bytes (10833 bytes: 15%)
+        INFO: chromium.ico entry #4: 32x32, 4264 bytes (BMP)
+        INFO: chromium.ico entry #5: 32x32, 2216 bytes (BMP)
+        INFO: chromium.ico entry #6: 48x48, 9640 bytes (BMP)
+        INFO: chromium.ico entry #7: 48x48, 3752 bytes (BMP)
+        INFO: chrome/app/theme/chromium/win/chromium.ico : 94270 => 83437 (10833 bytes : 11 %)
+        ```
 
 5. Canviar el fitxer de BRANDING del navegador.
     
-    * **Fitxer a modificar: ``**
-    * **Codi a modificar:** Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer i el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
+    * **Fitxer a modificar: `chrome/app/theme/chromium/BRANDING`**
+    * **Codi a modificar:** 
+        
+        Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer i el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
 
 # Compilació de Chromium
 Un cop dutes a terme les modificacions al codi font proposades, ja pot compilar el projecte, i n'obtindrà el navegador Nebula.
