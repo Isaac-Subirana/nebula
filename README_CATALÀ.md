@@ -13,6 +13,7 @@
     - [D'altres modificacions per fer la vida de l'usuari més agradable (_quality of live improvements_)](#daltres-modificacions-per-fer-la-vida-de-lusuari-més-agradable-quality-of-live-improvements)
     - [Interfície gràfica i personalització](#interfície-gràfica-i-personalització)
 - [Compilació de Chromium](#compilació-de-chromium)
+    - [Arguments de compilació recomanats](#arguments-de-compilació-recomanats)
     - [Com crear un instal·lador interactiu](#com-crear-un-installador-interactiu)
 - [Tests recomanats](#tests-recomanats)
     - [Del mateix projecte Chromium](#del-mateix-projecte-chromium)
@@ -29,7 +30,7 @@ Si el que vol és simplement descarregar-se i instal·lar el navegador Nebula, p
 
 # Requeriments mínims del sistema
 Siusplau, tingui present que aquests eren els requisits del sistema durant l'última actualització d'aquest README. Podria ser que haguessin canviat amb el temps.
-* Un ordinador d'arquitectura x86-64 amb, com a mínim, 8 GB DE RAM. Es recomana tenir més de 16 GB de RAM, i tot i així el temps de compilació serà molt llarg. **Més de 64 GB no són excessives, així com una CPU amb més de 20 nuclis tampoc no és excessiva.**
+* Un ordinador d'arquitectura x86-64 amb, com a mínim, 8 GB de RAM. Es recomana tenir més de 16 GB de RAM, i tot i així el temps de compilació serà molt llarg. **Més de 64 GB no són excessives, així com una CPU amb més de 20 nuclis tampoc no és excessiva.**
 * Com a mínim uns 100 GB d'espai lliure al disc dur (en podeu trobar una descripció més detallada a les instruccions del projecte Chromium per al vostre sistema operatiu). **Es recomana un SSD, preferiblement NVMe, per a un temps de descàrrega i compilació més petit.**
 * Tenir Git instal·lat (o [Git per a Windows](https://gitforwindows.org/) si compilarà Nebula des d'un ordinador amb Windows).
 
@@ -42,26 +43,27 @@ Siusplau, tingui present que aquests eren els requisits del sistema durant l'úl
 
 Llegeixi i segueixi les instruccions sobre com descarregar-se el codi per al seu sistema operatiu, recollides a [la documentació del projecte Chromium (en anglès)](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md).
 
+
+Segueixi tots els passos per a configurar el seu sistema i descarregar-se el codi, fins a arribar a l'apartat `Setting up the build`.
+
 ### Un consell si el seu ordinador utilitza Windows
 Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·lar els complements de `Visual Studio` necessaris, pot fer-ho des d'una interfície gràfica: 
 * Obri `Visual Studio Installer` (Si ja el té instal·lat. Si no, se'l pot descarregar [des d'aquest enllaç](https://visualstudio.microsoft.com/downloads/)).
 * Vagi a la pestanya "**_Workloads_**" (o "**_Cargas de trabajo_**") i seleccioni "**_Desktop development with C++_**" (o "**_Desarrollo de escritorio con C++_**"). Asseguri's que els subcomponents on es mencioni "**_MFC_**" i "**_ATL_**" estiguin seleccionats. Asseguri's també que els components on es mencioni "**_SDK_**" i **la seva versió del sistema operatiu** estiguin seleccionats.
 
-Segueixi tots els passos per a configurar el seu sistema i descarregar-se el codi, fins a arribar a l'apartat `Setting up the build`.
-
 # Modificacions
 **Tot seguit, oferim un llistat de les modificacions a aplicar a al codi font de Chromium per a obtenir Nebula.**
 
-**Si només vol compilar Chromium, o si vol compilar Chromium abans d'aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README](https://github.com/Isaac-Subirana/nebula/blob/main/README_CATAL%C3%80.md#compilaci%C3%B3-de-chromium).**
+**Si només vol compilar Chromium, o si vol compilar Chromium abans d'aplicar les modificacions al codi font i recompilar-lo després, pot anar directament [a l'apartat corresponent d'aquest README](#compilació-de-chromium).**
 
 Les rutes on fer les modificacions que mencionarem són relatives a la ruta de descàrrega de Chromium. Si l'heu descarregat a la carpeta recomanada per la documentació del projecte Chromium, partirem sempre de `[EL TEU DISC]/src/chromium/src/`.
 
-Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar directament sobre la versió original, però comproveu que l'estructura del codi sigui igual a l'original que proveïm nosaltres. En algun cas en què això segur que no sigui possible (perquè proveïm de diversos fragments a modificar dins d'una mateixa caixa de text) n'avisem al principi.
+Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar directament sobre la versió original, però comproveu que l'estructura del codi sigui igual a l'original que proveïm nosaltres. En algun cas en què copiar i enganxar no sigui possible (perquè proveïm de diversos fragments a modificar dins d'una mateixa caixa de text) n'avisem al principi de la modificació en concret.
 
 ### Per protegir de les galetes (_cookies_)
 1. Afegir a totes les galetes guardades l'atribut `samesite=strict`, per molt que s'intentin guardar amb valors diferents. 
    
-   Podeu considerar si voleu que l'atribut aplicat sigui `samesite` o si considereu que amb `lax` n'hi ha prou per evitar les casuístiques que us interessi.
+   Podeu considerar si voleu que l'atribut aplicat sigui `strict` o si considereu que amb `lax` n'hi ha prou per evitar les casuístiques que us interessi.
     * **Fitxer a modificar: `net/cookies/canonical_cookie.cc`**
     * **Codi a modificar:**
 
@@ -336,7 +338,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 "invalid parameter name, WEBGL_debug_renderer_info not enabled");
         ```
 
-3. Activar per defecte la sol·licitud "_DO NOT TRACK_", la protecció contra fingerprinting i la protecció  d'IP gestionades per la _Privacy Sandbox_, i bloquejar les galetes de tercers també en el mode B (un entorn alternatiu temporal dins de Chromium).
+3. Activar per defecte la sol·licitud "_DO NOT TRACK_", la protecció contra fingerprinting i la protecció d'IP gestionades per la _Privacy Sandbox_, i bloquejar les galetes de tercers també en el mode B (un entorn alternatiu temporal dins de Chromium).
     
     * **Fitxer a modificar: `components/privacy_sandbox/tracking_protection_prefs.cc`**
     * **Codi a modificar:**
@@ -743,17 +745,17 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         
         Un cop fet, si el vol fer públic, busqui també globalment `[El nom del seu navegador]OS` (per exemple, `NebulaOS`) i torni'l a substituir per `ChromeOS`, ja que amb la cerca anterior s'haurà fet aquest canvi indesitjat.
 
-4. Canviar el logotip del navegador per un logotip personalitzat. 
+4. Canviar la icona del navegador per una de personalitzada. 
    
-    #### Si només vol utilitzar el logotip de Nebula
+    #### Si només vol utilitzar la icona de Nebula
 
-   Si només vol canviar el logotip de per defecte per el de Nebula, pot substituir directament els fitxers d'icones dins de `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosaltres li proporcionem directament el fitxer `.ico` per a Windows, i els fitxers de la icona original en diverses mides i formats si el que vol és compilar el navegador per a una plataforma diferent.
+   Si només vol canviar la icona per defecte per la de Nebula, pot substituir directament els fitxers de logotips dins de `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosaltres li proporcionem directament el fitxer `.ico` per a Windows, i els fitxers de la icona original en diverses mides i formats si el que vol és compilar el navegador per a una plataforma diferent.
    
-    #### Si vol utilitzar un logotip personalitzat
+    #### Si vol utilitzar una icona personalitzada
 
-   Si el que vol és utilitzar un logotip personalitzat, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
+   Si el que vol és utilitzar una icona personalitzada, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
    
-    Si vol que els logos es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
+    Si vol que les icones es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
     
     Per a poder executar `src/tools/resources/optimize-ico-files.py`, recomanat dins de les instruccions,  _**si està compilant Chromium des de Windows**_, ho haurà de fer utilitzant alguna eina que li permeti executar scripts `.sh` (scripts _bash_ de Linux). 
     
@@ -799,6 +801,27 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 Un cop dutes a terme les modificacions al codi font proposades, ja pot compilar el projecte, i n'obtindrà el navegador Nebula.
 
 Per fer-ho, segueixi les instruccions proporcionades [al document referent al seu sistema operatiu](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md) des de l'apartat `Setting up the build`.
+
+### Arguments de compilació recomanats
+Per a una compilació més ràpida i un navegador perfectament funcional al final d'aquesta, li recomanem que utilitzi els arguments de compilació següents (també els pot trobar a `resources/` dins aquest repositori):
+
+```shell
+# Set build arguments here. See `gn help buildargs`.
+is_debug=false
+is_component_build=false
+is_official_build=true
+use_official_google_api_keys = false
+symbol_level=0
+
+#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+target_os="win"
+
+use_allocator_shim=true
+enable_hangout_services_extension=false
+blink_symbol_level=0
+v8_symbol_level=0
+is_official_build=true
+```
 
 ### Com crear un instal·lador interactiu
 Si voleu crear un instal·lador interactiu per a utilitzar-lo en lloc del `mini_installer` proporcionat per el projecte Chromium, podeu fer-ho de la següent manera:

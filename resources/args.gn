@@ -1,0 +1,15 @@
+# Set build arguments here. See `gn help buildargs`.
+is_debug=false
+is_component_build=false
+is_official_build=true
+use_official_google_api_keys = false
+symbol_level=0
+
+#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+target_os="win"
+
+use_allocator_shim=true
+enable_hangout_services_extension=false
+blink_symbol_level=0
+v8_symbol_level=0
+is_official_build=true
