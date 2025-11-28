@@ -8,7 +8,6 @@
 - [Modificaciones](#modificaciones)
     - [Para proteger de las _cookies_](#para-proteger-de-las-cookies)
     - [Para proteger de otros métodos de indentificación (_fingerprinting_, _DO NOT TRACK_, etc.) y desactivar la _prerenderización_ y la _preconnexión_](#para-proteger-de-otros-métodos-de-indentificación-fingerprinting-do-not-track-etc-y-desactivar-la-prerenderización-y-la-preconnexión)
-- [A PARTIR DE AQUÍ, PENDIENTE DE TRADUCCIÓN](#a-partir-de-aquí-pendiente-de-traducción)
     - [Para desactivar la _Privacy Sandbox_](#para-desactivar-la-privacy-sandbox)
     - [Para desactivar las métricas de uso y informes de errores](#para-desactivar-las-métricas-de-uso-y-informes-de-errores)
     - [Otras modificaciones para hacer la vida del usuario más agradable (_quality of live improvements_)](#otras-modificaciones-para-hacer-la-vida-del-usuario-más-agradable-quality-of-live-improvements)
@@ -467,17 +466,17 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
                 &kSuppressesPrerenderingOnSlowNetwork,
                 "slow_network_threshold_for_prerendering", base::Milliseconds(1)};
         ```
-# A PARTIR DE AQUÍ, PENDIENTE DE TRADUCCIÓN
+
 ### Para desactivar la _Privacy Sandbox_
-1. Desactivació de components de _Privacy Sanbox_ referents a l'agrupació de l'historial web en Temes (_Topics_) y als anuncis personalitzats, entre d'altres.
+1. Desactivación de componentes de _Privacy Sanbox_ referentes a la agrupación del historial web en Temas (_Topics_) y a los anuncios personalitzados, entre otros.
    
    * **Archivo a modificar: `components/privacy_sandbox/privacy_sandbox_features.cc`**
    * **Código a modificar:**
-    
-       **Atenció! No proveïm en aquest cas de  código habilitat per a copiar y enganxar, haureu de buscar individualment cada Fragmento de código y subsituir-lo manualment!**
+      
+        **Atención! No proveemos en este caso de código habilitado para copiar y pegar, tendrá que buscar individualmente cada componente que mencionamos y sustituirlo por la versión propuesta (o los valores que considere oportunos) manualmente!**
 
         Sustitución de: 
-        
+            
         ```C++
         //Fragmento de código 1
         BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -485,19 +484,19 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
 
         //Fragmento de código 2
         BASE_FEATURE(kEnforcePrivacySandboxAttestations,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+                base::FEATURE_ENABLED_BY_DEFAULT);
 
         //Fragmento de código 3
         BASE_FEATURE(kPrivacySandboxActivityTypeStorage,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+                base::FEATURE_ENABLED_BY_DEFAULT);
 
         //Fragmento de código 4
         BASE_FEATURE(kPrivacySandboxAdTopicsContentParity,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+                base::FEATURE_ENABLED_BY_DEFAULT);
 
         //Fragmento de código 5
         BASE_FEATURE(kPrivacySandboxMigratePrefsToSchemaV2,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+                base::FEATURE_ENABLED_BY_DEFAULT);
 
         //Fragmento de código 6
         const char kPrivacySandboxActivityTypeStorageLastNLaunchesName[] =
@@ -554,7 +553,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         ```
 
 ### Para desactivar las métricas de uso y informes de errores
-1. Desactivació de les mètriques d'ús.
+1. Desactivación de las métricas de uso.
    
     * **Archivo a modificar: `components/metrics/metrics_service.cc`**
     * **Código a modificar:**
@@ -579,9 +578,9 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         }
         ```
 
-2. Desactivació de la possibilitat de l'enviament d'informes d'errors.
+2. Desactivación de la posibilidad de envío de informes de errores.
 
-    * **Archivo a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
+    * **Archivo a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (cambiará según el sisteam operativo para el que quiera compilar su navegador, pero no tenemos conocimiento sobre en qué archivos se puede encontrar su implementación).
     * **Código a modificar:**
 
         Sustitución de:
@@ -607,7 +606,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         ```
 
 ### Otras modificaciones para hacer la vida del usuario más agradable (_quality of live improvements_)
-1. Activar per defecte la _flag_ que permet les descàrregues paral·leles.
+1. Activar por defecto la _flag_ que permite las descargas en paralelo.
    
    * **Archivo a modificar: `components/download/public/common/download_features.cc`**
    * **Código a modificar:**
@@ -637,7 +636,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         #endif
         );
         ```
-2. Activar per defecte la _flag_ que permet silenciar una pestanya que estigui reproduint àudio des de la visualització mateixa de les pestanyes.
+2. Activar por defecto la _flag_ que permite silenciar una pestaña que esté reproduciendo audio desde la visualicazión misma de las pestañas.
    
     * **Archivo a modificar: `media/base/media_switches.cc`**
     * **Código a modificar:**
@@ -656,7 +655,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
 
 ### Interfaz gráfica y personalización
 
-1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista dels IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
+1. Cambiar el motor de búsqueda por defecto a Qwant (en vez de Google). Puede sustitiuirlo por cualquier otro simplemente cambiando el prefijo antes del `.id` (por ejemplo, para usar DuckDuckGo, sería `duckduckgo.id`). Puede encontrar una lista de los IDs en `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
    
    * **Archivo a modificar: `components/search_engines/template_url_prepopulate_data.cc`**
    * **Código a modificar:**
@@ -685,9 +684,9 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         }
         ```
 
-2. Desactivar el missatge flotant "Falten algunes claus d'API de Google"  que apareix per defecte cada vegada que s'inicia el navegador. 
+2. Desactivar el mensaje flotante "Faltan algunes llaves de API de Google"  que aparece por defecto cada vez que se inicia el navegador. 
 
-    Si vostè ho considera oportú, pot fer servir claus d'API de Google per a obtenir accés a serveis com ara el Traductor de Google integrat al navegador, o la sincronització de preferències. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) pot trobar les instruccions per utilitzar-ne. Nosaltres, en aquest cas, no ho vam considerar necessari.
+    Si usted lo considera oportuno, puede usar llaves de API de Google para obtener acceso a servicios como el Traductor de Google integrado en el navegador, o la sincronización de preferencias. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) puede encontrar las instrucciones para usarlas.
 
     * **Archivo a modificar: `chrome/browser/ui/startup/infobar_utils.cc`**
     * **Código a modificar:**
@@ -708,9 +707,9 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         }*/
         ```
 
-3. Personalitzar les cadenes de text del navegador (el nom que apareix a la interfície gràfica).
+3. Personalizar las cadenas de texto del navegador (el nombre que aparece en la interfaz gráfica).
    
-    * **Fitxers a modificar - per a les frases de referència:**
+    * **Archivos a modificar - para las frases de referencia:**
     
         * `chrome/app/chromium_strings.grd`
         * `chrome/app/google_chrome_strings.grd`
@@ -719,52 +718,54 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         * `chrome/app/settings_google_chrome_strings.grdp`
         * `components/components_chromium_strings.grd`
     
-    * **Codi a modificar - per a les frases de referència:**
+    * **Código a modificar - para las frases de referencia:**
         
-        Dins d'aquests fitxers, substitueixi només les ocurrències de "Chrome" y "Chromium" que apareguin en cadenes de text amb l'atribut `translateable="false"`, com en el següent exemple:
+        Dentro de estos archivos, sustituya solo las ocurrencias de "Chrome" y "Chromium" que aparezcan en cadenas de texto con el atributo `translateable="false"`, como en el siguiente ejemplo:
 
         ```xml
         <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
             Chromium
           </message>
         ```
-        Aquest exemple mencionat hauríem de substituir-lo per:
+        Este ejemplo mencionado debería ser sustituido con:
 
         ```xml
         <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
-            [El nom del vostre navegador]
+            [El nombre de su navegador]
           </message>
         ```
 
-    * **Fitxers a modificar - per a les traduccions:**
+    * **Archivos a modificar - para las traducciones:**
 
-        Perquè el nom es mostri correctament en tots els idiomes, s'han d'editar tots els fitxers `.xtb` dins de les carpetes `chrome/app/resources/` y `components/strings/`.
+        Para que el nombre se muestre correctamente en todos los idiomas, se deben editar todos los archivos `.xtb` dentro de las carpetas `chrome/app/resources/` y `components/strings/`.
 
-    * **Codi a modificar - per a les traduccions:**
+    * **Código a modificar - para las traducciones:**
         
-        Substitueixi les referències a `Chromium` y `Chrome` (recomanem utilitzar Visual Studio Code per a buscar totes les ocurrències d'aquestes paraules dins dels fitxers y substituir-les directament) pel nom personalitzat del seu navegador. **Recordi activar la opció perquè la cerca y substitució distingeixi entre majúscules y minúscules, o podria ser que es trobi amb errors de compilació al modificar sense voler noms de variable.** 
+        Sustituya las referencias a `Chromium` y `Chrome` (recomendamos utilizar Visual Studio Code para buscar todas las ocurrencias de estas palabras dentro de los archivos y sustituirlas directamente) por el nombre personalizado de su navegador. **Recuerde activar la opción para que la búsqueda y sustitución distinga entre mayúsculas y minúsculas, o podría encontrarse con errores de compilación al cambiar sin querer nombres de variable.** 
         
-        Un cop fet, si el vol fer públic, busqui també globalment `[El nom del seu navegador]OS` (per exemple, `NebulaOS`) y torni'l a substituir per `ChromeOS`, ja que amb la cerca anterior s'haurà fet aquest canvi indesitjat.
+        Una vez hecho, si lo quiere publicar, busque también globalmente en estas mismas ubicaciones `[El nombre de su navegador]OS` (por ejemplo, `NebulaOS`) y vuelva a sustituirlo por `ChromeOS`, ya que con la búsqueda anterior se habrá realizado este cambio indeseado.
 
-4. Canviar el logotip del navegador per un logotip personalitzat. 
+4. Cambiar el icono del navegador por un icono personalitzado. 
    
     #### Si solo quiere utilizar el icono de Nebula
 
    Si només vol canviar el logotip de per defecte per el de Nebula, pot substituir directament els fitxers d'icones dins de `chrome/app/theme/chromium` y `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosaltres li proporcionem directament el fitxer `.ico` per a Windows, y els fitxers de la icona original en diverses mides y formats si el que vol és compilar el navegador per a una plataforma diferent.
+
+   Si sol quiere cambiar el icono de Chromium por el de Nebula, puede sustituir directamente los ficheros del logotipo en `chrome/app/theme/chromium` y `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosotros le proporcionamos directamente el archivo `.ico` para Windows, y los ficheros de nuestro icono en diversos tamaños y formatos si lo que quiere es compilar el navegador para una plataforma distinta.
    
     #### Si quiere utilizar un icono personalizado
 
-   Si el que vol és utilitzar un logotip personalitzat, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` y `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
+   Si lo que quiere es usar un icono personalizado, sustitya los iconos de la carpeta `chrome/app/theme/chromium` y `chrome/app/theme/chromium/[la plataforma para la que compile]` por el suyo.
    
-    Si vol que els logos es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
+    Si quiere que los iconos se muestren correctamente en Windows, siga [estas instrucciones](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
     
-    Per a poder executar `src/tools/resources/optimize-ico-files.py`, recomanat dins de les instruccions,  _**si està compilant Chromium des de Windows**_, ho haurà de fer utilitzant alguna eina que li permeti executar scripts `.sh` (scripts _bash_ de Linux). 
+    Per a poder ejecutar `src/tools/resources/optimize-ico-files.py`, recomendado en las instrucciones, _**si está compilando Chromium en Windows**_, deberá hacerlo utilizando alguna herramienta que le permita ejecutar scripts `.sh` (scripts _bash_ de Linux). 
     
-    Li recomanem utilitzar [MSYS2](https://www.msys2.org/) de la següent manera: 
+    Le recomendamos usar [MSYS2](https://www.msys2.org/) de la siguiente manera:
        
-    * Descarregui's els executables que trobarà dins `resources/logo/programs` en aquest mateix repositori a la carpeta `C:/src/tools`.
-    * Substitueixi els `.ico` del projecte amb els seus.
-    * Executi les següents comandes, seguides y sense reiniciar MSYS:
+    * Descárguese los ejecutables que encontrará en `resources/logo/programs` en este mismo repostiorio, en la carpeta `C:/src/tools`.
+    * Sustituya los `.ico` del proyecto con los suyos propios.
+    * Ejecute los siguientes comandos, seguidos y sin reiniciar MSYS:
         ```bash
         pacman -S mingw-w64-x86_64-advancecomp mingw-w64-x86_64-libpng mingw-w64-x86_64-optipng
         
@@ -773,10 +774,10 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
 
         cd /c/src/chromium/src
         python tools/resources/optimize-ico-files.py chrome/app/theme/chromium/win/chromium.ico 
-        # Executar aquesta última comanda amb les diverses rutes dels .ico a comprovar.
+        # Ejecutar este último comando con las diversas rutas de los .ico a comprobar.
         ```
         
-        L'_output_ de l'última comanda hauria de ser semblant al següent:
+        El _output_ del último comando debería ser parecido al siguiente:
 
         ```
         INFO: chromium.ico entry #1: 16x16, 1128 bytes (BMP)
@@ -791,20 +792,20 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         INFO: chrome/app/theme/chromium/win/chromium.ico : 94270 => 83437 (10833 bytes : 11 %)
         ```
 
-5. Canviar el fitxer de BRANDING del navegador.
+5. Cambiar el archivo de BRANDING del navegador.
     
     * **Archivo a modificar: `chrome/app/theme/chromium/BRANDING`**
     * **Código a modificar:** 
         
-        Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer y el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
+        Sustituya las referencias al nombre de la compañía, el nombre del producto, etc., por los que desee que se muestren en les propiedades del archivo  y el listado de programas instalados en Windows. **Tenga en cuenta que no puede usar tildes.**
 
 # Compilación de Chromium
-Un cop dutes a terme les modificacions al  código font proposades, ja pot compilar el projecte, y n'obtindrà el navegador Nebula.
+Una vez terminadas las modificaciones del código fuente propuestas, ya puede compilar el proyecto, y obtendrá el navegador Nebula.
 
-Per fer-ho, segueixi les instruccions proporcionades [al document referent al seu sistema operatiu](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md) des de l'apartat `Setting up the build`.
+Para hacerlo, siga las instrucciones proporcionadas [en el documento referente a su sistema operativo](https://github.com/chromium/chromium/blob/main/docs/get_the_code.md) desde el apartado `Setting up the build`.
 
 ### Argumentos de compilación recomendados
-Per a una compilació més ràpida y un navegador perfectament funcional al final d'aquesta, li recomanem que utilitzi els arguments de compilació següents (també els pot trobar a `resources/` dins aquest repositori):
+Para una compilación más rápida y un navegador perfectamente funcional al final de esta, le recomendamos que utilize los siguients argumentso de compilación (que también puede encontrar en `resources/` dentro de este mismo repositorio):
 
 ```shell
 # Set build arguments here. See `gn help buildargs`.
@@ -814,7 +815,7 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+#Configure su sistema operativo objetivo en el argumento siguiente. Las opciones disponibles son: "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
 target_os="win"
 
 use_allocator_shim=true
@@ -825,39 +826,40 @@ is_official_build=true
 ```
 
 ### Cómo crear un instalador interactivo
-Si voleu crear un instal·lador interactiu per a utilitzar-lo en lloc del `mini_installer` proporcionat per el projecte Chromium, podeu fer-ho de la següent manera:
+Si quiere crear un instalador interactivo para usarlo en vez del `mini_installer` que proporciona el proyecto Chromium, puede hacerlo de la siguiente manera:
 
-* Instal·leu-vos el programa [Inno Setup Compiler](https://jrsoftware.org/isdl.php).
-* Compileu el `mini_installer` del Projecte:
+* Instálese el programa [Inno Setup Compiler](https://jrsoftware.org/isdl.php).
+* Compile el `mini_installer` del Proyecto:
   
   ```shell
   cd out/Default
   autoninja mini_installer
   ```
 
-* Descarregeu-vos o copieu l'script [`UI_installer.iss`](https://github.com/Isaac-Subirana/nebula/blob/main/resources/UI_installer.iss) que podeu trobar a la carpeta `resources` d'aquest repositori.
-* Compileu-lo utilitzant Inno Setup Compiler (tingueu en compte que heu de copiar el `mini_installer.exe` generat pel Projecte a la carpeta on us hagueu descarregat l'script).
+* Descárguese o copie el script [`UI_installer.iss`](https://github.com/Isaac-Subirana/nebula/blob/main/resources/UI_installer.iss) que puede encontrar en la carpeta `resources` de este repositorio.
+* Compílelo utilizando Inno Setup Compiler (tenga en cuenta que debe copiar el `mini_installer.exe` creado por el Proyecto en la carpeta donde se haya descargado el script).
 
-Alternativament, també podeu crear vosaltres el vostre propi script y compilar-lo des del programa que més us agradi, y fer que extregui (o no) directament els fitxers del vostre navegador en lloc de ser una façana sobre el `mini_installer`.
+Alternativamente, también puede crear usted su propio script y compilarlo directamente desde el programa que prefiera, y hacer que extraiga (o no) directamente los archivos del navegador en vez de ser una fachada sobre `mini_installer`.
 
 # Test recomendados
 ### Del mismo proyecto Chromium
-Recomanem utilitzar les utilitats `base_unittests` y `browser_tests`, que venen amb el  código font del navegador. Podem compilar-les amb la comanda següent:
+Recomendamos usar las utilidades `base_unittests` y `browser_tests`, que vienen en el código fuente del navegador. Puede compilarlas con el comando siguiente:
+
 ```shell
 cd out/Default
 autoninja base_unittests && autoninja browser_tests
 ```
-Després, només caldrà executar-los. Podeu trobar la documentació del Projecte referent a totes les seves utilitats de testeig [aquí](https://chromium.googlesource.com/chromium/src/+/main/docs/testing/testing_in_chromium.md).
+Después, solo deberá ejecutarlos. Puede encontrar la documentación del Proyecto referente a todas las utilidades de testeo [aquí](https://chromium.googlesource.com/chromium/src/+/main/docs/testing/testing_in_chromium.md).
 
 ### Referentes a la privacidad
-* L'analitzador de privacitat de [Privacy.net](https://privacy.net/analyzer/).
-* Els tests de [browserleaks.com](https://browserleaks.com) referents al [canvas](https://browserleaks.com/canvas) fingerprinting y al [WebGL](https://browserleaks.com/webgl) fingerprinting.
-* Els tests de [webglreport.com](https://webglreport.com/?v=1) y [webgpureport.org](https://webgpureport.org/), referents també al fingerprinting.
+* El analizador de privacidad de [Privacy.net](https://privacy.net/analyzer/).
+* Los test de [browserleaks.com](https://browserleaks.com) referentes al [canvas](https://browserleaks.com/canvas) fingerprinting y al [WebGL](https://browserleaks.com/webgl) fingerprinting.
+* Los test de [webglreport.com](https://webglreport.com/?v=1) y [webgpureport.org](https://webgpureport.org/), referentes también al fingerprinting.
 
 ### Referentes al rendimiento
-Referents al rendiment, recomanem utilitzar els tres tests oferits per [browserbench.org](https://browserbench.org/):
-* [Speedometer](https://browserbench.org/Speedometer3.1/), que s'utilitza per a mesurar la fluïdesa d'aplicacions web simples.
-* [JetStream](https://browserbench.org/JetStream/), que s'utiltiza per a mesurar el rendiment del navegador executant  código JavaScript y WebAssembly (utilitzat normalment en aplicacions web complexes).
-* [MotionMark](https://browserbench.org/MotionMark1.3.1/), que s'utilitza per a mesurar la capacitat d'un navegador per a animar escenes complexes.
+Referentes al rendimiento, recomendamos usar los tres test oficiales ofrecidos por [browserbench.org](https://browserbench.org/):
+* [Speedometer](https://browserbench.org/Speedometer3.1/), que se utiliza para medir la fluidez de aplicaciones web simples.
+* [JetStream](https://browserbench.org/JetStream/), que se utiliza para medir el rendimiento del navegador ejecutando código JavaScript y WebAssembly (utilizados normalmente en aplicaciones web complejas).
+* [MotionMark](https://browserbench.org/MotionMark1.3.1/), que se utiliza para medir la capacidad de un navegador para animar escenas complejas.
 
-Nota: en aquests tests, les puntuacions més altes són les millors.
+Nota: en estos test, las puntuaciones más altas son mejores.

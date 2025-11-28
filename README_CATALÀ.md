@@ -813,7 +813,7 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+#Configuri el seu sistema operatiu objectiu en el següent argument. Les opcions disponibles són: "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
 target_os="win"
 
 use_allocator_shim=true
