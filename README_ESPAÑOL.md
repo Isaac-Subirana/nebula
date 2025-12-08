@@ -815,14 +815,33 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Configure su sistema operativo objetivo en el argumento siguiente. Las opciones disponibles son: "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+#Configure su sistema operativo objetivo en el argumento siguiente. Las opciones disponibles son: "android", "chromeos", "ios", "linux", "nacl" (obsoleto), "win" 
 target_os="win"
 
 use_allocator_shim=true
 enable_hangout_services_extension=false
 blink_symbol_level=0
 v8_symbol_level=0
-is_official_build=true
+```
+
+Para poder utilizar estos argumentos correctamente, deberá editar también `[SU DISCO]/src/chromium/.gclient`, y en el apartado
+
+```
+"custom_vars": {
+    },
+```
+añada
+
+```
+"custom_vars": {
+      "checkout_pgo_profiles": True,
+    },
+```
+
+Para guardar estos cambios, ejecute el siguiente comando:
+
+```shell
+gclient runhooks
 ```
 
 ### Cómo crear un instalador interactivo

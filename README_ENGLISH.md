@@ -814,14 +814,33 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Set your target OS in the following argument. The available options are: "android", "chromeos", "ios", "linux", "nacl", "chromeos", "win" 
+#Set your target OS in the following argument. The available options are: "android", "chromeos", "ios", "linux", "nacl" (obsolete), "win" 
 target_os="win"
 
 use_allocator_shim=true
 enable_hangout_services_extension=false
 blink_symbol_level=0
 v8_symbol_level=0
-is_official_build=true
+```
+
+To be able to use this arguments correctly, you will need to edit `[YOUR DISK]/src/chromium/.gclient`too, and in the following section
+
+```
+"custom_vars": {
+    },
+```
+add
+
+```
+"custom_vars": {
+      "checkout_pgo_profiles": True,
+    },
+```
+
+To save this changes, you will then need to run the following command:
+
+```shell
+gclient runhooks
 ```
 
 ### How to create an interactive installer
