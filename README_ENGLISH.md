@@ -59,16 +59,16 @@ If your computer uses Windows, you can use a graphical interface to install the 
 
 The modification paths that we are going to mention are relative to the path were you have downloaded Chromium. If you have downloaded it in the folder that the Chromium project's documentation recommends, we will be starting from `[YOUR DISK]/src/chromium/src`.
 
-Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar directament sobre la versió original, però comproveu que l'estructura del codi sigui igual a l'original que proveïm nosaltres. En algun cas en què copiar i enganxar no sigui possible (perquè proveïm de diversos fragments a modificar dins d'una mateixa caixa de text) n'avisem al principi de la modificació en concret.
+All of the modifications that we are going to list should be copy-and-paste (over the original code) ready, but please make sure that the code structure is the same as the original we provide. In some cases where copy-and-pasting is not possible (as we provide with different code snippets that should be modified in a same text box) we will tell you in that specific modification's beginning.
 
 ### To protect from cookies
-1. Afegir a totes les galetes guardades l'atribut `samesite=strict`, per molt que s'intentin guardar amb valors diferents. 
+1. Adding the `samesite = strict` attribute to all of the saved cookies, even if they specify different `samesite` values. 
    
-   Podeu considerar si voleu que l'atribut aplicat sigui `strict` o si considereu que amb `lax` n'hi ha prou per evitar les casuístiques que us interessi.
-    * **Fitxer a modificar: `net/cookies/canonical_cookie.cc`**
-    * **Codi a modificar:**
+   You can consider if you want the applied attribute to be `strict` or whether you think `lax` is enough to stop the cases that concern you.
+    * **File to modify: `net/cookies/canonical_cookie.cc`**
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         switch (cookie.SameSite()) {
@@ -87,7 +87,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         switch (cookie.SameSite()) {
@@ -106,11 +106,11 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-2. Fer que les galetes de tercers estiguin bloquejades per defecte en el mode de navegació tradicional, i no només en el mode d'Incògnit.
-    * **Fitxer a modificar: `components/content_settings/core/browser/cookie_settings.cc`**
-    * **Codi a modificar:**
+2. Blocking by default third-party cookies in all browsing modes and not only Incognito.
+    * **File to modify: `components/content_settings/core/browser/cookie_settings.cc`**
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         void CookieSettings::RegisterProfilePrefs(
@@ -122,7 +122,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         void CookieSettings::RegisterProfilePrefs(
@@ -135,14 +135,14 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         ```
 
 ### To protect from other identification methods (fingerprinting, DO NOT TRACK, etc.) and to disable preconnection and prerendering
-1. Activar la _flag_ (paràmetre experimental) que afegeix _soroll_ al generar llenços, per a fer el navegador menys reconeixible.
+1. Activating a _flag_ (experimental feature) which adds _noise_ to the generated canvas, to make browser tracing more difficult.
 
-    Alternativament, també podeu bloquejar completament l'enviament de _canvas_, buscant una secció de codi similar dins del mateix fitxer, però on es mencioni `kBlockCanvasReadback`, i aplicant-hi les mateixes modificacions.
+    Alternativelly, you can also completely block the sending of _canvas_, searching for a code section similar inside this same file, where `kBlockCanvasReadback` is mentioned, and applying the same modifications there.
    
-    * **Fitxer a modificar: `components/fingerprinting_protection_filter/interventions/common/interventions_features.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `components/fingerprinting_protection_filter/interventions/common/interventions_features.cc`**
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         BASE_FEATURE(kCanvasNoise, base::FeatureState::FEATURE_DISABLED_BY_DEFAULT);
@@ -154,7 +154,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                         false);
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kCanvasNoise, base::FeatureState::FEATURE_ENABLED_BY_DEFAULT);
@@ -165,17 +165,17 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                         "enable_in_regular_mode",
                         true);
         ```
-2. Mentir a WebGL sobre el hardware de l'ordinador des del qual s'executi el navegador, per a evitar el _fingerprinting_ a través de WebGL. 
+2. Lying to WebGL about the client computer's hardware, to avoid WebGL _fingerprinting_. 
 
-    Podeu igualment modificar els valors falsos que li proporcionem per qualsevols altre que considereu oportuns i creïbles.
+    You can modify this values to whichever you think fit and are credible instead of the values we suggest.
 
-    * **Fitxers a modificar: `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc` i
+    * **Files to modify: `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc` i
         `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`**
-    * **Codi a modificar:**
+    * **Code to modify:**
 
-        Dins de `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc`:
+        Inside of `third_party/blink/renderer/modules/webgpu/gpu_adapter_info.cc`:
 
-        Substitució de:
+        Replace:
 
         ```C++
         : vendor_(vendor),
@@ -193,7 +193,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
           power_preference_(power_preference) {}
         ```
 
-        Per:
+        With:
 
         ```C++
         : vendor_("Intel Inc."),
@@ -211,14 +211,14 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
           power_preference_(power_preference) {}
         ```
 
-        Dins de `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`: 
+        Inside of `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`: 
 
-        **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada component que mencionem i subsituir-lo per la versió que proposem (o els valors que considereu oportuns) manualment!**
+        **Warning! We do not provide, in this case, of copy-and-paste ready code, so you will need to search individually for each listed code snippet and manually replace it with your preferred "false" hardware.**
 
-        Substitució de:
+        Replace:
 
         ```C++
-        //Fragment de codi 1
+        //Code snippet #1
 
         case GL_SHADING_LANGUAGE_VERSION:
             if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
@@ -233,7 +233,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                     String(ContextGL()->GetString(GL_SHADING_LANGUAGE_VERSION)) +
                     ")");
 
-        //Fragment de codi 2
+        //Code snippet #2
 
         case GL_VERSION:
             if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
@@ -246,7 +246,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 script_state,
                 "WebGL 1.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
 
-        //Fragment de codi 3
+        //Code snippet #3
 
         case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
             if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
@@ -279,10 +279,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 "invalid parameter name, WEBGL_debug_renderer_info not enabled");
         ```
 
-        Per:
+        With:
         
         ```C++
-        //Fragment de codi 1
+        //Code snippet #1
 
         case GL_SHADING_LANGUAGE_VERSION:
             if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
@@ -294,7 +294,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 script_state,
                 String("WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"));
 
-        //Fragment de codi 2
+        //Code snippet #2
 
         case GL_VERSION:
             if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
@@ -307,7 +307,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 script_state,
                 String("WebGL 1.0 (OpenGL ES 2.0 Chromium)"));
 
-        //Fragment de codi 3
+        //Code snippet #3
         case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
             if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
                 if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
@@ -341,10 +341,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 3. Activar per defecte la sol·licitud "_DO NOT TRACK_", la protecció contra fingerprinting i la protecció d'IP gestionades per la _Privacy Sandbox_, i bloquejar les galetes de tercers també en el mode B (un entorn alternatiu temporal dins de Chromium).
     
-    * **Fitxer a modificar: `components/privacy_sandbox/tracking_protection_prefs.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `components/privacy_sandbox/tracking_protection_prefs.cc`**
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         registry->RegisterBooleanPref(
@@ -366,7 +366,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         registry->RegisterBooleanPref(prefs::kTrackingProtection3pcdEnabled, false);
         ```
 
-        Per:
+        With:
 
         ```C++
         registry->RegisterBooleanPref(
@@ -390,17 +390,17 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 4. Activar algunes intervencions per aturar el _fingerprinting_ en el mode d'Incògnit, desactivar el _fallback_ de la _prerenderització_ a la _preconnexió_.
 
-    * **Fitxer a modificar: `chrome/common/chrome_features.cc `** 
-    * **Codi a modificar:**
+    * **File to modify: `chrome/common/chrome_features.cc `** 
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         BASE_FEATURE(kIncognitoFingerprintingInterventions,
              base::FEATURE_DISABLED_BY_DEFAULT);
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kIncognitoFingerprintingInterventions,
@@ -413,7 +413,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_ENABLED_BY_DEFAULT);
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -421,15 +421,15 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 5. Desactivar el _prefetch proxy_ de Chromium (el component que duu a terme la preconnexió).
     
-    * **Fitxer a modificar: `content/public/common/content_features.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `content/public/common/content_features.cc`**
+    * **Code to modify:**
     
-        Substitució de:
+        Replace:
         ```C++
         BASE_FEATURE(kPrefetchProxy, base::FEATURE_ENABLED_BY_DEFAULT);
         ```
 
-        per:
+        With:
 
         ```C++
         BASE_FEATURE(kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -437,10 +437,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
    
 6. Fer que la _prerenderització_ no s'activi en xarxes lentes i canviar els paràmetres sobre la velocitat de xarxa considerada lenta perquè el navegador consideri que qualsevol xarxa ho és. 
 
-    * **Fitxer a modificar: `content/browser/preloading/prerender/prerender_features.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `content/browser/preloading/prerender/prerender_features.cc`**
+    * **Code to modify:**
     
-        Substitució de:
+        Replace:
 
         ```C++
         BASE_FEATURE(kSuppressesPrerenderingOnSlowNetwork,
@@ -454,7 +454,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
                 "slow_network_threshold_for_prerendering", base::Milliseconds(208)};
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kSuppressesPrerenderingOnSlowNetwork,
@@ -471,35 +471,35 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 ### To disable Privacy Sandbox
 1. Desactivació de components de _Privacy Sanbox_ referents a l'agrupació de l'historial web en Temes (_Topics_) i als anuncis personalitzats, entre d'altres.
    
-   * **Fitxer a modificar: `components/privacy_sandbox/privacy_sandbox_features.cc`**
-   * **Codi a modificar:**
+   * **File to modify: `components/privacy_sandbox/privacy_sandbox_features.cc`**
+   * **Code to modify:**
     
-       **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada fragment de codi i subsituir-lo manualment!**
+       **Warning! We do not provide, in this case, of copy-and-paste ready code, so you will need to search individually for each listed code snippet and manually replace it!**
 
-        Substitució de: 
+        Replace: 
         
         ```C++
-        //Fragment de codi 1
+        //Code snippet #1
         BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_ENABLED_BY_DEFAULT);
 
 
-        //Fragment de codi 2
+        //Code snippet #2
         BASE_FEATURE(kEnforcePrivacySandboxAttestations,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-        //Fragment de codi 3
+        //Code snippet #3
         BASE_FEATURE(kPrivacySandboxActivityTypeStorage,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-        //Fragment de codi 4
+        //Code snippet #4
         BASE_FEATURE(kPrivacySandboxAdTopicsContentParity,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-        //Fragment de codi 5
+        //Code snippet #5
         BASE_FEATURE(kPrivacySandboxMigratePrefsToSchemaV2,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-        //Fragment de codi 6
+        //Code snippet #6
         const char kPrivacySandboxActivityTypeStorageLastNLaunchesName[] =
             "last-n-launches";
 
@@ -515,29 +515,29 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
             kPrivacySandboxActivityTypeStorageWithinXDaysName, 60};
         ```
 
-        Per:
+        With:
 
         ```C++
-        //Fragment de codi 1
+        //Code snippet #1
         BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT);
 
-        //Fragment de codi 2
+        //Code snippet #2
         BASE_FEATURE(kEnforcePrivacySandboxAttestations,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-        //Fragment de codi 3
+        //Code snippet #3
         BASE_FEATURE(kPrivacySandboxActivityTypeStorage,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-        //Fragment de codi 4
+        //Code snippet #4
         BASE_FEATURE(kPrivacySandboxAdTopicsContentParity,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-        //Fragment de codi 5
+        //Code snippet #5
         BASE_FEATURE(kPrivacySandboxMigratePrefsToSchemaV2,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-        //Fragment de codi 6
+        //Code snippet #6
         const char kPrivacySandboxActivityTypeStorageLastNLaunchesName[] =
         "last-n-launches";
 
@@ -556,10 +556,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 ### To disable telemetry and failure reports
 1. Desactivació de les mètriques d'ús.
    
-    * **Fitxer a modificar: `components/metrics/metrics_service.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `components/metrics/metrics_service.cc`**
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         void MetricsService::Start() {
@@ -569,7 +569,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         void MetricsService::Start() {
@@ -581,10 +581,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 2. Desactivació de la possibilitat de l'enviament d'informes d'errors.
 
-    * **Fitxer a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
-    * **Codi a modificar:**
+    * **File to modify: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
+    * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         bool ChromeCrashReporterClient::GetCollectStatsConsent() {
@@ -595,7 +595,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         bool ChromeCrashReporterClient::GetCollectStatsConsent() {
@@ -609,10 +609,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 ### Quality of live improvements
 1. Activar per defecte la _flag_ que permet les descàrregues paral·leles.
    
-   * **Fitxer a modificar: `components/download/public/common/download_features.cc`**
-   * **Codi a modificar:**
+   * **File to modify: `components/download/public/common/download_features.cc`**
+   * **Code to modify:**
 
-        Substitució de:
+        Replace:
 
         ```C++
         BASE_FEATURE(kParallelDownloading,
@@ -625,7 +625,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         );
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kParallelDownloading,
@@ -639,16 +639,16 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         ```
 2. Activar per defecte la _flag_ que permet silenciar una pestanya que estigui reproduint àudio des de la visualització mateixa de les pestanyes.
    
-    * **Fitxer a modificar: `media/base/media_switches.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `media/base/media_switches.cc`**
+    * **Code to modify:**
   
-        Substitució de:
+        Replace:
 
         ```C++
         BASE_FEATURE(kEnableTabMuting, base::FEATURE_DISABLED_BY_DEFAULT);
         ```
 
-        Per:
+        With:
 
         ```C++
         BASE_FEATURE(kEnableTabMuting, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -658,10 +658,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista dels IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
    
-   * **Fitxer a modificar: `components/search_engines/template_url_prepopulate_data.cc`**
-   * **Codi a modificar:**
+   * **File to modify: `components/search_engines/template_url_prepopulate_data.cc`**
+   * **Code to modify:**
         
-        Substitució de:
+        Replace:
 
         ```C++
         std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
@@ -673,7 +673,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
@@ -689,10 +689,10 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
     Si vostè ho considera oportú, pot fer servir claus d'API de Google per a obtenir accés a serveis com ara el Traductor de Google integrat al navegador, o la sincronització de preferències. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) pot trobar les instruccions per utilitzar-ne. Nosaltres, en aquest cas, no ho vam considerar necessari.
 
-    * **Fitxer a modificar: `chrome/browser/ui/startup/infobar_utils.cc`**
-    * **Codi a modificar:**
+    * **File to modify: `chrome/browser/ui/startup/infobar_utils.cc`**
+    * **Code to modify:**
        
-        Substitució de:
+        Replace:
 
         ```C++
         if (!google_apis::HasAPIKeyConfigured()) {
@@ -700,7 +700,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-        Per:
+        With:
 
         ```C++
         /*if (!google_apis::HasAPIKeyConfigured()) {
@@ -710,7 +710,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 3. Personalitzar les cadenes de text del navegador (el nom que apareix a la interfície gràfica).
    
-    * **Fitxers a modificar - per a les frases de referència:**
+    * **Files to modify - per a les frases de referència:**
     
         * `chrome/app/chromium_strings.grd`
         * `chrome/app/google_chrome_strings.grd`
@@ -728,7 +728,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
             Chromium
           </message>
         ```
-        Aquest exemple mencionat hauríem de substituir-lo per:
+        Aquest exemple mencionat hauríem de substituir-lo With:
 
         ```xml
         <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
@@ -736,7 +736,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
           </message>
         ```
 
-    * **Fitxers a modificar - per a les traduccions:**
+    * **Files to modify - per a les traduccions:**
 
         Perquè el nom es mostri correctament en tots els idiomes, s'han d'editar tots els fitxers `.xtb` dins de les carpetes `chrome/app/resources/` i `components/strings/`.
 
@@ -793,8 +793,8 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 5. Canviar el fitxer de BRANDING del navegador.
     
-    * **Fitxer a modificar: `chrome/app/theme/chromium/BRANDING`**
-    * **Codi a modificar:** 
+    * **File to modify: `chrome/app/theme/chromium/BRANDING`**
+    * **Code to modify:** 
         
         Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer i el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
 

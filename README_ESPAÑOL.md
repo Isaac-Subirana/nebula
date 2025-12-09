@@ -211,7 +211,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
 
         Dentro de `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`: 
 
-        **Atención! No proveemos en este caso de código habilitado para copiar y pegar, tendrá que buscar individualmente cada componente que mencionamos y sustituirlo por la versión propuesta (o los valores que considere oportunos) manualmente!**
+        **¡Atención! ¡No proveemos en este caso de código habilitado para copiar y pegar, tendrá que buscar individualmente cada componente que mencionamos y sustituirlo por la versión propuesta (o los valores que considere oportunos) manualmente!**
 
         Sustitución de:
 
@@ -473,7 +473,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
    * **Archivo a modificar: `components/privacy_sandbox/privacy_sandbox_features.cc`**
    * **Código a modificar:**
       
-        **Atención! No proveemos en este caso de código habilitado para copiar y pegar, tendrá que buscar individualmente cada componente que mencionamos y sustituirlo por la versión propuesta (o los valores que considere oportunos) manualmente!**
+        **¡Atención! ¡No proveemos en este caso de código habilitado para copiar y pegar, tendrá que buscar individualmente cada fragmento de código y sustituirlo manualmente!**
 
         Sustitución de: 
             
