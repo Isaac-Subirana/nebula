@@ -24,8 +24,6 @@
 
 In this document we provide the instrucutions to compile Nebula (or any other Chromium-based browser) from scratch, using your own means.
 
-Per a fer-ho, necessitarà alguns coneixements tècnics, predisposició per a llegir documentació en anglès, un ordinador mitjanament potent i paciència (o un ordinador qualsevol i MOLTA paciència), i d'altres detalls que pot trobar a la secció [Requeriments mínims del sistema](#requeriments-mínims-del-sistema) d'aquest mateix README. 
-
 To do so, you are going to need some technichal knowledge, predisposition to read documentation, a medium-end or high-end PC and patience (or any PC and A LOT of patience), and some other details you are going to find in this README's section [Minimum system requirements](#minimum-system-requirements).
 
 If you wanted to simply download and install the Nebula browser, you can do it from [this link](https://github.com/Isaac-Subirana/nebula/releases) by clicking over the first occurrence of `Nebula-Setup.exe` you see.
@@ -339,7 +337,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
                 "invalid parameter name, WEBGL_debug_renderer_info not enabled");
         ```
 
-3. Activar per defecte la sol·licitud "_DO NOT TRACK_", la protecció contra fingerprinting i la protecció d'IP gestionades per la _Privacy Sandbox_, i bloquejar les galetes de tercers també en el mode B (un entorn alternatiu temporal dins de Chromium).
+3. Activate by default the "_DO NOT TRACK_" request sending, the fingerprinting and IP protection provided by the _Privacy Sandbox_. Block third-party cookies in Mode B (an alternative temporary development environment inside of Chromium) too. 
     
     * **File to modify: `components/privacy_sandbox/tracking_protection_prefs.cc`**
     * **Code to modify:**
@@ -388,7 +386,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         registry->RegisterBooleanPref(prefs::kTrackingProtection3pcdEnabled, true);
         ```
 
-4. Activar algunes intervencions per aturar el _fingerprinting_ en el mode d'Incògnit, desactivar el _fallback_ de la _prerenderització_ a la _preconnexió_.
+4. Activate some interventions to stop _fingerprinting_ in Incognito mode, deactivate _prerendering_'s fallback to _preconnection_.
 
     * **File to modify: `chrome/common/chrome_features.cc `** 
     * **Code to modify:**
@@ -407,7 +405,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
              base::FEATURE_ENABLED_BY_DEFAULT);
         ```
 
-        Substitució també de:
+        Also, replace:
 
         ```C++
         BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -419,7 +417,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         BASE_FEATURE(kPrerenderFallbackToPreconnect, base::FEATURE_DISABLED_BY_DEFAULT);
         ```
 
-5. Desactivar el _prefetch proxy_ de Chromium (el component que duu a terme la preconnexió).
+5. Deactivate Chromium's _prefetch proxy_ (the component which performs the preconnection).
     
     * **File to modify: `content/public/common/content_features.cc`**
     * **Code to modify:**
@@ -435,8 +433,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         BASE_FEATURE(kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT);
         ```
    
-6. Fer que la _prerenderització_ no s'activi en xarxes lentes i canviar els paràmetres sobre la velocitat de xarxa considerada lenta perquè el navegador consideri que qualsevol xarxa ho és. 
-
+6. Change _prerendering_ so that it does not activate in slow networks, and then change the slow network parameters so that any network is considered to be "slow".
     * **File to modify: `content/browser/preloading/prerender/prerender_features.cc`**
     * **Code to modify:**
     
@@ -469,14 +466,14 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         ```
 
 ### To disable Privacy Sandbox
-1. Desactivació de components de _Privacy Sanbox_ referents a l'agrupació de l'historial web en Temes (_Topics_) i als anuncis personalitzats, entre d'altres.
+1. Deactivate some _Privacy Sanbox_ features referring to the grouping of web history in _Topics_ and personalized ads, among others.
    
    * **File to modify: `components/privacy_sandbox/privacy_sandbox_features.cc`**
    * **Code to modify:**
     
        **Warning! We do not provide, in this case, of copy-and-paste ready code, so you will need to search individually for each listed code snippet and manually replace it!**
 
-        Replace: 
+        Replace:
         
         ```C++
         //Code snippet #1
@@ -554,7 +551,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         ```
 
 ### To disable telemetry and failure reports
-1. Desactivació de les mètriques d'ús.
+1. Disabling usage metrics.
    
     * **File to modify: `components/metrics/metrics_service.cc`**
     * **Code to modify:**
@@ -579,9 +576,9 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         }
         ```
 
-2. Desactivació de la possibilitat de l'enviament d'informes d'errors.
+2. Disabling the possiblity of sending error logs.
 
-    * **File to modify: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
+    * **File to modify: `chrome/app/chrome_crash_reporter_client_win.cc`** (it will change depending on your browser's target operating system, but we don't know in which files you can find it's implementation for other operating systems).
     * **Code to modify:**
 
         Replace:
@@ -607,7 +604,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         ```
 
 ### Quality of live improvements
-1. Activar per defecte la _flag_ que permet les descàrregues paral·leles.
+1. Activate, by default, the _flag_ that allows for parallel downloading.
    
    * **File to modify: `components/download/public/common/download_features.cc`**
    * **Code to modify:**
@@ -637,7 +634,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         #endif
         );
         ```
-2. Activar per defecte la _flag_ que permet silenciar una pestanya que estigui reproduint àudio des de la visualització mateixa de les pestanyes.
+2. Activating, by default, the _flag_ which allows to mute a media-reproducing tab from the tab strip.
    
     * **File to modify: `media/base/media_switches.cc`**
     * **Code to modify:**
@@ -656,7 +653,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
 
 ### Graphical interface and personalization
 
-1. Canviar el motor de cerca per defecte a Qwant (en lloc de Google). Pot canviar-lo per qualsevol altre simplement canviant el prefix abans del `.id` (per exemple, per posar DuckDuckGo, seria `duckduckgo.id`). Pot trobar una llista dels IDs a `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
+1. Changing the default search engine to Qwant (instead of Google). You can change it to your preferred search engine by simply changing the prefix before `.id` (as an example, to use DuckDuckGo, it would be `duckduckgo.id`). You can find a list of all of the available IDs in `third_party/search_engines_data/resources/definitions/prepopulated_engines.json`.
    
    * **File to modify: `components/search_engines/template_url_prepopulate_data.cc`**
    * **Code to modify:**
@@ -685,9 +682,9 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         }
         ```
 
-2. Desactivar el missatge flotant "Falten algunes claus d'API de Google"  que apareix per defecte cada vegada que s'inicia el navegador. 
+2. Deactivating the message "There are some Google API keys missing" which appears by default every time the browser is opened.
 
-    Si vostè ho considera oportú, pot fer servir claus d'API de Google per a obtenir accés a serveis com ara el Traductor de Google integrat al navegador, o la sincronització de preferències. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) pot trobar les instruccions per utilitzar-ne. Nosaltres, en aquest cas, no ho vam considerar necessari.
+    If you find it necessary, you can use Google API keys to be able to use some extra services, such as the integrated Google Translate service, or preference sinchronization. You can find the instructions on how to do so [here](https://www.chromium.org/developers/how-tos/api-keys/).
 
     * **File to modify: `chrome/browser/ui/startup/infobar_utils.cc`**
     * **Code to modify:**
@@ -708,9 +705,9 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         }*/
         ```
 
-3. Personalitzar les cadenes de text del navegador (el nom que apareix a la interfície gràfica).
+3. Personalize the browser text strings (the graphical interface messages).
    
-    * **Files to modify - per a les frases de referència:**
+    * **Files to modify - for the base strings:**
     
         * `chrome/app/chromium_strings.grd`
         * `chrome/app/google_chrome_strings.grd`
@@ -719,28 +716,28 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         * `chrome/app/settings_google_chrome_strings.grdp`
         * `components/components_chromium_strings.grd`
     
-    * **Codi a modificar - per a les frases de referència:**
+    * **Code to modify - for the base strings:**
         
-        Dins d'aquests fitxers, substitueixi només les ocurrències de "Chrome" i "Chromium" que apareguin en cadenes de text amb l'atribut `translateable="false"`, com en el següent exemple:
+        Inside of these files, replace only the "Chrome" and "Chromium" occurrences that apear in strings with the attribute `translateable="false"`, such as the following example:
 
         ```xml
         <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
             Chromium
           </message>
         ```
-        Aquest exemple mencionat hauríem de substituir-lo With:
+        This example should be replaced with:
 
         ```xml
         <message name="IDS_PRODUCT_NAME" desc="The Chrome application name" translateable="false">
-            [El nom del vostre navegador]
+            [Your browser's name]
           </message>
         ```
 
-    * **Files to modify - per a les traduccions:**
+    * **Files to modify - for the translations:**
 
-        Perquè el nom es mostri correctament en tots els idiomes, s'han d'editar tots els fitxers `.xtb` dins de les carpetes `chrome/app/resources/` i `components/strings/`.
+        To correctly show the name in all languages, all of the `.xtb` files inside the folders `chrome/app/resources/` and `components/strings/` should be edited.
 
-    * **Codi a modificar - per a les traduccions:**
+    * **Code to modify - for the translations:**
         
         Substitueixi les referències a `Chromium` i `Chrome` (recomanem utilitzar Visual Studio Code per a buscar totes les ocurrències d'aquestes paraules dins dels fitxers i substituir-les directament) pel nom personalitzat del seu navegador. **Recordi activar la opció perquè la cerca i substitució distingeixi entre majúscules i minúscules, o podria ser que es trobi amb errors de compilació al modificar sense voler noms de variable.** 
         

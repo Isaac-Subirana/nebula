@@ -684,7 +684,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
         }
         ```
 
-2. Desactivar el mensaje flotante "Faltan algunes llaves de API de Google"  que aparece por defecto cada vez que se inicia el navegador. 
+2. Desactivar el mensaje flotante "Faltan algunes llaves de API de Google" que aparece por defecto cada vez que se inicia el navegador. 
 
     Si usted lo considera oportuno, puede usar llaves de API de Google para obtener acceso a servicios como el Traductor de Google integrado en el navegador, o la sincronización de preferencias. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) puede encontrar las instrucciones para usarlas.
 

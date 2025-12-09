@@ -580,7 +580,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
 2. Desactivació de la possibilitat de l'enviament d'informes d'errors.
 
-    * **Fitxer a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixiement sobre a quins fitxers se'n pot trobar la implementació).
+    * **Fitxer a modificar: `chrome/app/chrome_crash_reporter_client_win.cc`** (variarà segons el sistema operatiu per al que volguem compilar el nostre navegador, però no tenim coneixement sobre a quins fitxers se'n pot trobar la implementació).
     * **Codi a modificar:**
 
         Substitució de:
@@ -684,7 +684,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
         }
         ```
 
-2. Desactivar el missatge flotant "Falten algunes claus d'API de Google"  que apareix per defecte cada vegada que s'inicia el navegador. 
+2. Desactivar el missatge flotant "Falten algunes claus d'API de Google" que apareix per defecte cada vegada que s'inicia el navegador. 
 
     Si vostè ho considera oportú, pot fer servir claus d'API de Google per a obtenir accés a serveis com ara el Traductor de Google integrat al navegador, o la sincronització de preferències. [Aquí](https://www.chromium.org/developers/how-tos/api-keys/) pot trobar les instruccions per utilitzar-ne. Nosaltres, en aquest cas, no ho vam considerar necessari.
 
