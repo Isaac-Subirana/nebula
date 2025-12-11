@@ -466,7 +466,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         ```
 
 ### To disable Privacy Sandbox
-1. Deactivate some _Privacy Sanbox_ features referring to the grouping of web history in _Topics_ and personalized ads, among others.
+1. Deactivate some _Privacy Sanbox_ features, referring to the grouping of web history in _Topics_ and personalized ads, among others.
    
    * **File to modify: `components/privacy_sandbox/privacy_sandbox_features.cc`**
    * **Code to modify:**
@@ -578,7 +578,7 @@ All of the modifications that we are going to list should be copy-and-paste (ove
 
 2. Disabling the possiblity of sending error logs.
 
-    * **File to modify: `chrome/app/chrome_crash_reporter_client_win.cc`** (it will change depending on your browser's target operating system, but we don't know in which files you can find it's implementation for other operating systems).
+    * **File to modify: `chrome/app/chrome_crash_reporter_client_win.cc`** (it will change depending on your browser's target operating system, but we don't know in which files you can find its implementation for other operating systems).
     * **Code to modify:**
 
         Replace:
@@ -739,29 +739,29 @@ All of the modifications that we are going to list should be copy-and-paste (ove
 
     * **Code to modify - for the translations:**
         
-        Substitueixi les referències a `Chromium` i `Chrome` (recomanem utilitzar Visual Studio Code per a buscar totes les ocurrències d'aquestes paraules dins dels fitxers i substituir-les directament) pel nom personalitzat del seu navegador. **Recordi activar la opció perquè la cerca i substitució distingeixi entre majúscules i minúscules, o podria ser que es trobi amb errors de compilació al modificar sense voler noms de variable.** 
+        Replace the references to `Chromium` and/or `Chrome` (we recommend using Visual Studio Code to search all occurrences of these words inside the files and replacing them directly) with your browser's personalized name. **Remember to activate the case-sensitive search-and-replace, or else you might encounter compilation errors as you could have involuntarily modified variable names.** 
         
-        Un cop fet, si el vol fer públic, busqui també globalment `[El nom del seu navegador]OS` (per exemple, `NebulaOS`) i torni'l a substituir per `ChromeOS`, ja que amb la cerca anterior s'haurà fet aquest canvi indesitjat.
+        Once you have done this, if you want to make your browser public, globally search for `[Your browser name]OS` too (for example, `NebulaOS`) and cange it back to `ChromeOS`, as with the previous replacement this unwanted change will have taken place.
 
-4. Canviar la icona del navegador per una de personalitzada. 
+4. Changing the default browser's icon for a personalized one.
    
-    #### Si només vol utilitzar la icona de Nebula
+    #### If you want to use Nebula's icon
 
-   Si només vol canviar la icona per defecte per la de Nebula, pot substituir directament els fitxers de logotips dins de `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]`. Nosaltres li proporcionem directament el fitxer `.ico` per a Windows, i els fitxers de la icona original en diverses mides i formats si el que vol és compilar el navegador per a una plataforma diferent.
-   
-    #### Si vol utilitzar una icona personalitzada
+   If you only want to change Chromium's default icon for Nebula's, you can directly replace the logo files inside `chrome/app/theme/chromium` and `chrome/app/theme/chromium/[your target platform]`. We provide you directly with the `.ico` file for Windows, and the original icon files in various sizes and formats if you want to compile the browser for a different platform.
 
-   Si el que vol és utilitzar una icona personalitzada, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
+    #### If you want to use a personalized icon
+
+   If you want to use a personalized icon, replace the logos in the folders `chrome/app/theme/chromium` and `chrome/app/theme/chromium/[your target platform]` with yours.
    
-    Si vol que les icones es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
+    If you want your icons to show correctly in Windows, follow [these instructions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
     
-    Per a poder executar `src/tools/resources/optimize-ico-files.py`, recomanat dins de les instruccions,  _**si està compilant Chromium des de Windows**_, ho haurà de fer utilitzant alguna eina que li permeti executar scripts `.sh` (scripts _bash_ de Linux). 
+    To be able to run `src/tools/resources/optimize-ico-files.py`, recommended inside the provided instructions,  _**if you are compiling Chromium on Windows**_, you will need to do so using some app that allows you to run `.sh` scripts (Linux _bash_ scripts). 
     
-    Li recomanem utilitzar [MSYS2](https://www.msys2.org/) de la següent manera: 
+    We recommend you using [MSYS2](https://www.msys2.org/) in the following way: 
        
-    * Descarregui's els executables que trobarà dins `resources/logo/programs` en aquest mateix repositori a la carpeta `C:/src/tools`.
-    * Substitueixi els `.ico` del projecte amb els seus.
-    * Executi les següents comandes, seguides i sense reiniciar MSYS:
+    * Download the executables you will find inside `resources/logo/programs` in this repository to `C:/src/tools`.
+    * Replace the project's `.ico` files with yours.
+    * Run the following commands, one after another and without restarting MSYS:
         ```bash
         pacman -S mingw-w64-x86_64-advancecomp mingw-w64-x86_64-libpng mingw-w64-x86_64-optipng
         
@@ -770,10 +770,10 @@ All of the modifications that we are going to list should be copy-and-paste (ove
 
         cd /c/src/chromium/src
         python tools/resources/optimize-ico-files.py chrome/app/theme/chromium/win/chromium.ico 
-        # Executar aquesta última comanda amb les diverses rutes dels .ico a comprovar.
+        # Run this last command with the several paths of the .ico to check.
         ```
         
-        L'_output_ de l'última comanda hauria de ser semblant al següent:
+        The output of this last command should be similar to:
 
         ```
         INFO: chromium.ico entry #1: 16x16, 1128 bytes (BMP)
@@ -788,12 +788,12 @@ All of the modifications that we are going to list should be copy-and-paste (ove
         INFO: chrome/app/theme/chromium/win/chromium.ico : 94270 => 83437 (10833 bytes : 11 %)
         ```
 
-5. Canviar el fitxer de BRANDING del navegador.
+5. Modifying the browser's BRANDING file.
     
     * **File to modify: `chrome/app/theme/chromium/BRANDING`**
     * **Code to modify:** 
         
-        Substitueixi les referències al nom de la companyia, el nom del producte, etc., per les que desitgi que es mostrin a les propietats del fitxer i el llistat de programes instal·lats a Windows. **Tingui en compte que no pot utilitzar accents.**
+        Replace all of the references to the company name, the product name, etc., with the ones you want to be shown on the executables' properties and on Windows' installed software list. **Please note that you can not use special characters (such as `, ´, ^, ¨...).**
 
 # Compiling Chromium
 Once all of the modifications of the source code have been completed, you can compile the project to get the Nebula browser.
@@ -811,7 +811,7 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Set your target OS in the following argument. The available options are: "android", "chromeos", "ios", "linux", "nacl" (obsolete), "win" 
+#Set your target OS in the following argument. The available options are: "android", "chromeos", "ios", "linux", "nacl" (deprecated), "win" 
 target_os="win"
 
 use_allocator_shim=true

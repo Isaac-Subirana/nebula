@@ -774,7 +774,7 @@ Todas las modificaciones que enumeraremos se deberían poder copiar y pegar dire
 
         cd /c/src/chromium/src
         python tools/resources/optimize-ico-files.py chrome/app/theme/chromium/win/chromium.ico 
-        # Ejecutar este último comando con las diversas rutas de los .ico a comprobar.
+        # Ejecutar este último comando con los diversos caminos de los .ico a comprobar.
         ```
         
         El _output_ del último comando debería ser parecido al siguiente:

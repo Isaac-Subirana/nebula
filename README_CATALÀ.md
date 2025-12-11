@@ -212,7 +212,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
 
         Dins de `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc`: 
 
-        **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada component que mencionem i subsituir-lo per la versió que proposem (o els valors que considereu oportuns) manualment!**
+        **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada component que mencionem i substituir-lo per la versió que proposem (o els valors que considereu oportuns) manualment!**
 
         Substitució de:
 
@@ -473,7 +473,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
    * **Fitxer a modificar: `components/privacy_sandbox/privacy_sandbox_features.cc`**
    * **Codi a modificar:**
     
-       **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada fragment de codi i subsituir-lo manualment!**
+       **Atenció! No proveïm en aquest cas de codi habilitat per a copiar i enganxar, haureu de buscar individualment cada fragment de codi i substituir-lo manualment!**
 
         Substitució de: 
         
@@ -753,7 +753,7 @@ Totes les modificacions que enumerarem s'haurien de poder copiar i enganxar dire
    
     #### Si vol utilitzar una icona personalitzada
 
-   Si el que vol és utilitzar una icona personalitzada, subsitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
+   Si el que vol és utilitzar una icona personalitzada, substitueixi els logos de la carpeta `chrome/app/theme/chromium` i `chrome/app/theme/chromium/[la plataforma per a la qual compili]` per el seu.
    
     Si vol que les icones es mostrin correctament a Windows, segueixi [aquestes instruccions](https://github.com/chromium/chromium/blob/main/chrome/app/theme/README.md). 
     
