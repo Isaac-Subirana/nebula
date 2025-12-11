@@ -1,7 +1,7 @@
 
 ---
 
-You can find the documentation **_in English_** detailing how to get Chromium code and modify and compile it to get Nebula [here](https://github.com/Isaac-Subirana/nebula/blob/main/README_ENGLISH.md). **It is still pending a lot of translation work!** 
+You can find the documentation **_in English_** detailing how to get Chromium code and modify and compile it to get Nebula [here](https://github.com/Isaac-Subirana/nebula/blob/main/README_ENGLISH.md).
     
 You can download Nebula from [here](https://github.com/Isaac-Subirana/nebula/releases) (`Nebula-Setup.exe`).
 
