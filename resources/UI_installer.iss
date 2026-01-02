@@ -16,6 +16,7 @@ NotRecognizedMessagesWarning=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 DisableDirPage=yes
+Uninstallable=No
 
 [Languages]
 
