@@ -5,7 +5,7 @@ is_official_build=true
 use_official_google_api_keys = false
 symbol_level=0
 
-#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl" (obsolete), "win" 
+#Set your operating system on the following arg. The options are "android", "chromeos", "ios", "linux", "nacl" (deprecated), "win" 
 target_os="win"
 
 use_allocator_shim=true
