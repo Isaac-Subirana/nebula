@@ -51,6 +51,7 @@ Go trough all of the steps to set up your system and to download the source code
 ```bash
     cd src && git checkout d0c2c9dd4cbcee9b5d17f258fe55e40fa8e3c0e9
 ```
+**_Once done you will be able to follow this README's instructions without having to omit any modification._**
 
 ### A quick tip if you're on Windows
 If your computer uses Windows, you can use a graphical interface to install the needed `Visual Studio` accessories: 

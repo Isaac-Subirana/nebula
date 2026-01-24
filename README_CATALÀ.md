@@ -52,6 +52,7 @@ Segueixi tots els passos per a configurar el seu sistema i descarregar-se el cod
 ```bash
     cd src && git checkout d0c2c9dd4cbcee9b5d17f258fe55e40fa8e3c0e9
 ```
+**_Un cop fet podrà seguir les instruccions d'aquest README sense haver d'ometre modificacions._**
 
 ### Un consell si el seu ordinador utilitza Windows
 Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·lar els complements de `Visual Studio` necessaris, pot fer-ho des d'una interfície gràfica: 

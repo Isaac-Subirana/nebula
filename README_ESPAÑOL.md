@@ -51,6 +51,7 @@ Siga todos los pasos para configurar su sistema y descargarse el código, hasta 
 ```bash
     cd src && git checkout d0c2c9dd4cbcee9b5d17f258fe55e40fa8e3c0e9
 ```
+**_Una vez hecho podrá seguir las instrucciones de este README sin tener que omitir modificaciones._**
 
 ### Un consejo si su ordenador utiliza Windows
 Si su ordenador usa Windows como sistema operativo, puede instalar los complementos de `Visual Studio` necesarios desde una interfaz gráfica: 
