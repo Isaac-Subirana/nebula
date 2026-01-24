@@ -47,7 +47,10 @@ Go trough all of the steps to set up your system and to download the source code
 
 **_Note: we have seen that in some newer versions of Chromium, you won't be able to apply some of the suggested modifications, because the files that managed them have been either modified or eliminated._**
 
-**_You will find the files we used for the latest Nebula release in the `source/chromium` folder of this same repository, with the modifications already applied to them but without any compiled output. You will also find the used `depot_tools` in `source/depot_tools`._**
+**_To download the original source code of Chromium's version 143.0.7450.0, in which Nebula's latest release is based, you have to download Chromium's source code following the Project's instructions (without usingt the `--no-history` flag) and then run the following command:_**
+```bash
+    cd src && git checkout d0c2c9dd4cbcee9b5d17f258fe55e40fa8e3c0e9
+```
 
 ### A quick tip if you're on Windows
 If your computer uses Windows, you can use a graphical interface to install the needed `Visual Studio` accessories: 

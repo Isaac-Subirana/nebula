@@ -48,7 +48,10 @@ Segueixi tots els passos per a configurar el seu sistema i descarregar-se el cod
 
 **_Nota: hem observat que en algunes versions més noves de Chromium no s'hi poden aplicar algunes de les modificacions que proposarem, ja que els fitxers que les gestionaven s'han modificat o esborrat._**
 
-**_Pot trobar els fitxers que vam utilitzar per a l'últim llançament de Nebula a la carpeta `source/chromium` d'aquest mateix repositori, amb les modificacions ja aplicades però sense compilar. Hi trobarà també els `depot_tools` que vam fer servir a `source/depot_tools`._**
+**_Per descarregar el codi font original de la versió de Chromium 143.0.7450.0, en la que es basa l'últim llançament de Nebula, pot fer-ho si es baixa el codi font de Chromium tal i com detallen les instruccions del Projecte (sense la flag `--no-history`) i després executa l'ordre següent:_**
+```bash
+    cd src && git checkout d0c2c9dd4cbcee9b5d17f258fe55e40fa8e3c0e9
+```
 
 ### Un consell si el seu ordinador utilitza Windows
 Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·lar els complements de `Visual Studio` necessaris, pot fer-ho des d'una interfície gràfica: 
