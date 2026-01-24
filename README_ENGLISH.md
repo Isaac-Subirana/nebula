@@ -47,7 +47,7 @@ Go trough all of the steps to set up your system and to download the source code
 
 **_Note: we have seen that in some newer versions of Chromium, you won't be able to apply some of the suggested modifications, because the files that managed them have been either modified or eliminated._**
 
-**_You will find the files we used for the latest Nebula release in the `resources` folder of this same repository, compressed in a zip file (`chromium_source.zip`), with the modifications already applied to them, but without any compiled output. You will also find the used `depot_tools`, in (`depot_tools.zip`)._**
+**_You will find the files we used for the latest Nebula release in the `source/chromium` folder of this same repository, with the modifications already applied to them but without any compiled output. You will also find the used `depot_tools` in `source/depot_tools`._**
 
 ### A quick tip if you're on Windows
 If your computer uses Windows, you can use a graphical interface to install the needed `Visual Studio` accessories: 
