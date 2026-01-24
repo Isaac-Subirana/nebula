@@ -46,6 +46,10 @@ Llegeixi i segueixi les instruccions sobre com descarregar-se el codi per al seu
 
 Segueixi tots els passos per a configurar el seu sistema i descarregar-se el codi, fins a arribar a l'apartat `Setting up the build`.
 
+**_Nota: hem observat que en algunes versions més noves de Chromium no s'hi poden aplicar algunes de les modificacions que proposarem, ja que els fitxers que les gestionaven s'han modificat o esborrat._**
+
+**_Pot trobar els fitxers que vam utilitzar per a l'últim llançament de Nebula a la carpeta `resources` d'aquest mateix repositori, comprimits en un únic zip (`chromium_source.zip`), amb les modificacions ja aplicades però sense compilar. Hi trobarà també els `depot_tools` que vam fer servir (`depot_tools.zip`)._**
+
 ### Un consell si el seu ordinador utilitza Windows
 Si el seu ordinador utilitza Windows com a sistema operatiu, a l'hora d'instal·lar els complements de `Visual Studio` necessaris, pot fer-ho des d'una interfície gràfica: 
 * Obri `Visual Studio Installer` (Si ja el té instal·lat. Si no, se'l pot descarregar [des d'aquest enllaç](https://visualstudio.microsoft.com/downloads/)).

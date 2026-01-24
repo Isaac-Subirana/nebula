@@ -45,6 +45,10 @@ Please, read and follow the instructions about how to donwload Chromium's source
 
 Go trough all of the steps to set up your system and to download the source code, up until the `Setting up the build` section.
 
+**_Note: we have seen that in some newer versions of Chromium, you won't be able to apply some of the suggested modifications, because the files that managed them have been either modified or eliminated._**
+
+**_You will find the files we used for the latest Nebula release in the `resources` folder of this same repository, compressed in a zip file (`chromium_source.zip`), with the modifications already applied to them, but without any compiled output. You will also find the used `depot_tools`, in (`depot_tools.zip`)._**
+
 ### A quick tip if you're on Windows
 If your computer uses Windows, you can use a graphical interface to install the needed `Visual Studio` accessories: 
 * Open the `Visual Studio Installer` app (if you already have Visual Studio installed. If you don't, you can download it from [this link](https://visualstudio.microsoft.com/downloads/)).
