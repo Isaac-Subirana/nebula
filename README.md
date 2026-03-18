@@ -7,7 +7,7 @@ You can download Nebula from [here](https://github.com/Isaac-Subirana/nebula/rel
 
 **IMPORTANT: Even though Nebula is a functional browser, it is the result of our Final Year High School Research Project, and so it has a lot of room for improvement.**
 
-**If you are searching for a private Chromium-based browser that you can practically use in your day-to-day, we recommend you try out [Brave](https://brave.com/), [Vivaldi](https://vivaldi.com/) or [the DuckDuckGo browser](https://duckduckgo.com).**
+**If you are searching for a private Chromium-based browser that you can practically use in your day-to-day, we recommend you try out [Brave](https://brave.com/), [Vivaldi](https://vivaldi.com/) or [the Helium browser](https://helium.computer/).**
 
 ---
 
@@ -17,7 +17,7 @@ Pot descarregar-se Nebula des d'[aquí](https://github.com/Isaac-Subirana/nebula
 
 **IMPORTANT: Encara que Nebula és un navegador funcional, és el producte d'un Treball de Recerca de Batxillerat i té força marge de millora.**
 
-**Si busca un navegador privat basat en Chromium i que pugui utilitzar de manera pràctica en el seu dia a dia, li recomanem que provi [Brave](https://brave.com/ca/), [Vivaldi](https://vivaldi.com/ca/) o [el navegador de DuckDuckGo](https://duckduckgo.com).**
+**Si busca un navegador privat basat en Chromium i que pugui utilitzar de manera pràctica en el seu dia a dia, li recomanem que provi [Brave](https://brave.com/ca/), [Vivaldi](https://vivaldi.com/ca/) o [el navegador Helium](https://helium.computer/).**
 
 ----
 
@@ -27,6 +27,6 @@ Puede descargarse Nebula [aquí](https://github.com/Isaac-Subirana/nebula/releas
 
 **IMPORTANTE: Aunque Nebula es un navegador funcional, es el resultado de un Projecto de Investigación de Bachillerato, y tiene aún bastante margen de mejora.**
 
-**Si busca un navegador privado basado en Chromium y que pueda utilizar de manera práctica en su día a día, le recomendamos que pruebe [Brave](https://brave.com/es/), [Vivaldi](https://vivaldi.com/es/) o [el navegador de DuckDuckGo](https://duckduckgo.com).**
+**Si busca un navegador privado basado en Chromium y que pueda utilizar de manera práctica en su día a día, le recomendamos que pruebe [Brave](https://brave.com/es/), [Vivaldi](https://vivaldi.com/es/) o [el navegador Helium](https://helium.computer/).**
 
 ---
